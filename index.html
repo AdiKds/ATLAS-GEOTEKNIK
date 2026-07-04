@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#020617">
+<meta name="description" content="Mega Atlas Geoteknik v7.0 - Full 11 Modules Edition">
+<title>🌍 Mega Atlas Geoteknik v7.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* === RESET & BASE TEMA === */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-main:#020617;--bg-card:#0f172a;--bg-header:rgba(15,23,42,0.95);
+  --border-color:#334155;--text-main:#f8fafc;--text-muted:#94a3b8;
+  --accent-amber:#f59e0b; --medical-cyan:#06b6d4; --accent-emerald:#10b981;
+  --danger:#ef4444; --simple:#ec4899; --success:#22c55e;
+}
+body.theme-light {
+  --bg-main:#f1f5f9;--bg-card:#ffffff;--bg-header:rgba(255,255,255,0.95);
+  --border-color:#cbd5e1;--text-main:#0f172a;--text-muted:#334155;
+  --accent-amber:#d97706; --medical-cyan:#0891b2; --accent-emerald:#059669;
+}
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:var(--bg-main);color:var(--text-main);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background-color 0.3s,color 0.3s}
+.font-tech { font-family: 'Orbitron', sans-serif; }
+.mono-font { font-family: 'JetBrains Mono', monospace; }
+
+/* === HOLO TOOLTIP CANGGIH === */
+.holo-tooltip {
+    position: fixed; background: rgba(15, 23, 42, 0.98); border: 2px solid var(--medical-cyan);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.4), inset 0 0 10px rgba(6, 182, 212, 0.2);
+    color: #ffffff; padding: 12px 16px; border-radius: 12px; font-size: 14px;
+    font-family: 'JetBrains Mono', monospace; z-index: 10000; display: none; opacity: 0;
+    pointer-events: none; max-width: 320px; backdrop-filter: blur(12px); line-height: 1.5; text-align: left;
+    transition: opacity 0.3s ease;
+}
+
+/* === ANIMASI SVG KUCING === */
+@keyframes blinkL { 0%, 85%, 100% { transform: scaleY(1); } 90% { transform: scaleY(0.05); } }
+@keyframes blinkR { 0%, 35%, 100% { transform: scaleY(1); } 40% { transform: scaleY(0.05); } }
+@keyframes earL-wiggle { 0%, 40%, 100% { transform: rotate(0deg); } 20% { transform: rotate(-15deg); } }
+@keyframes earR-wiggle { 0%, 40%, 100% { transform: rotate(0deg); } 70% { transform: rotate(15deg); } }
+@keyframes floatCat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+.eye-left { transform-origin: 35px 50px; animation: blinkL 3.5s infinite; }
+.eye-right { transform-origin: 65px 50px; animation: blinkR 3.5s infinite; }
+.ear-l-jenaka { transform-origin: 25px 35px; animation: earL-wiggle 3s infinite ease-in-out; }
+.ear-r-jenaka { transform-origin: 75px 35px; animation: earR-wiggle 3s infinite ease-in-out; }
+.cat-jenaka-float { animation: floatCat 3s infinite ease-in-out; }
+
+/* === ANIMASI GRADASI MOTTO === */
+@keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.animate-gradient-text { background-size: 200% auto; animation: gradient-shift 4s ease infinite; }
+
+/* === ANIMASI ORBIT === */
+@keyframes spin-orb { to { transform: rotate(360deg); } }
+@keyframes spin-orb-rev { to { transform: rotate(-360deg); } }
+.atom-orbiter { position: absolute; inset: -15px; border-radius: 50%; border: 3px dashed transparent; opacity: 0.8; pointer-events: none; }
+.orb-1 { border-color: var(--accent-amber) transparent var(--accent-amber) transparent; animation: spin-orb 6s linear infinite; border-width: 4px; }
+.orb-2 { border-color: transparent var(--medical-cyan) transparent var(--medical-cyan); animation: spin-orb-rev 8s linear infinite; border-width: 4px; }
+.orb-3 { border-color: var(--accent-emerald) transparent var(--accent-emerald) transparent; animation: spin-orb 10s linear infinite reverse; border-width: 5px; border-style: solid; opacity: 0.5; }
+
+@keyframes technology-scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+@keyframes drift-slow-motion { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+.sc-scanline-animation { animation: technology-scanline 7s linear infinite; }
+.sc-drift-animation { animation: drift-slow-motion 5.5s ease-in-out infinite; }
+.screensaver-grid { background-image: linear-gradient(rgba(245, 158, 11, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px); background-size: 50px 50px; }
+
+/* === CONTAINERS === */
+#splash, #techScreensaver { position:fixed; inset:0; background:var(--bg-main); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transition:opacity .6s ease; }
+#techScreensaver { z-index: 9998; display: none; opacity: 0; }
+
+#app{position:fixed;inset:0;display:none;z-index:1; flex-direction:row; opacity: 0; transition: opacity 0.4s ease;}
+#app.visible{display:flex; opacity: 1;}
+#sidebar{width:300px;background:var(--bg-card);border-right:1px solid var(--border-color);display:flex;flex-direction:column;transition:transform .3s;z-index:50;flex-shrink:0;}
+#sidebar.collapsed{transform:translateX(-100%);position:absolute;height:100%}
+#nav-scroll{flex:1;overflow-y:auto;padding:.8rem}
+#nav-scroll::-webkit-scrollbar{width:6px}
+#nav-scroll::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+.nav-item{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem;border-radius:.6rem;cursor:pointer;transition:all .15s;margin-bottom:.5rem;font-size:1rem;color:var(--text-muted);border:1px solid transparent;font-family:'JetBrains Mono',monospace; font-weight:bold;}
+.nav-item:hover{background:rgba(245,158,11,.05);color:var(--text-main)}
+.nav-item.active{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:var(--accent-amber)}
+#sidebar footer{padding:1.5rem;border-top:1px solid var(--border-color);font-size:.9rem;color:var(--text-muted);background:var(--bg-card);}
+#sidebar footer .progress-bar{height:10px;background:rgba(255,255,255,0.1);border-radius:5px;margin-top:.8rem;overflow:hidden;}
+#sidebar footer .progress-fill{height:100%;background:linear-gradient(135deg,var(--accent-amber),#ea580c);border-radius:5px;transition:width .4s;}
+
+/* === KONTEN UTAMA === */
+#main{flex:1;display:flex;flex-direction:column;position:relative;overflow-x:hidden; width:100%;}
+#content{flex:1;overflow-y:auto;scroll-behavior:smooth;padding:1.25rem;}
+#content::-webkit-scrollbar{display:none;} /* Hilangkan Scrollbar Visual Utama */
+#content { -ms-overflow-style: none; scrollbar-width: none; }
+
+.btn-icon{width:46px;height:46px;border-radius:.6rem;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1.3rem;flex-shrink:0;}
+.btn-icon:hover{background:var(--border-color);color:var(--text-main); transform: translateY(-2px);}
+.simple-toggle{padding:.5rem 1.2rem;border-radius:999px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-muted);font-size:1rem;cursor:pointer;display:flex;align-items:center;gap:.5rem;flex-shrink:0;white-space:nowrap; font-weight:bold;}
+.simple-toggle.active{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:var(--accent-emerald)}
+
+#bottom-nav {height:80px;background:var(--bg-card);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:40;flex-shrink:0;border-top: 1px solid var(--border-color);}
+
+.slide{display:none;padding:1rem 1rem 3rem 1rem;max-width:1200px;margin:0 auto;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.info-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:1rem;padding:2rem;margin:1.5rem 0;position:relative;overflow:hidden;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1)}
+.info-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(135deg,var(--accent-amber),#ea580c)}
+
+.quiz-box{background:var(--bg-card);border:1px solid var(--border-color);border-radius:1rem;padding:1.5rem;margin:1.5rem 0}
+.quiz-opt{padding:1rem 1.2rem;border-radius:.8rem;border:2px solid var(--border-color);background:rgba(255,255,255,0.02);color:var(--text-muted);cursor:pointer;margin-bottom:1rem;font-size:1.05rem;transition:all 0.2s;}
+.quiz-opt:hover{border-color:var(--accent-amber);color:var(--text-main); background:rgba(245,158,11,.05);}
+.quiz-opt.correct{background:rgba(16,185,129,.15);border-color:var(--accent-emerald);color:var(--accent-emerald); font-weight:bold;}
+.quiz-opt.wrong{background:rgba(239,68,68,.15);border-color:var(--danger);color:var(--danger)}
+.quiz-opt.disabled{pointer-events:none;opacity:.7}
+.quiz-explanation{display:none;margin-top:1rem;padding:1rem;border-radius:.8rem;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);font-size:0.95rem;color:var(--text-muted)}
+.quiz-explanation.show{display:block; animation:fadeIn 0.3s ease;}
+
+body.simple-mode .academic-only{display:none !important}
+body:not(.simple-mode) .simple-only{display:none !important}
+
+/* Penyesuaian Radar Chart agar tidak overflow */
+.radar-container { 
+    width: 100%; 
+    height: 100%; 
+    position: relative; 
+    min-height: 250px; 
+    max-height: 400px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+}
+#liveRadarChart {
+    max-width: 100%;
+    max-height: 100%;
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* === MODALS === */
+.modal-overlay, #flash-screen, #exam-screen, #exam-result { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.active, #flash-screen.active, #exam-screen.active, #exam-result.active { display: flex; }
+.modal-content { background: var(--bg-card); border: 2px solid var(--accent-amber); border-radius: 1.5rem; width: 100%; max-width: 600px; padding: 2rem; animation: fadeIn 0.3s ease; position: relative; box-shadow: 0 10px 40px rgba(245,158,11,0.3); }
+.modal-close { position: absolute; top: 1.5rem; right: 2rem; font-size: 2rem; color: var(--text-muted); cursor: pointer; z-index: 10; }
+.modal-close:hover { color: var(--danger); }
+
+/* Flashcard Specifics */
+.flash-card-container{width:100%;max-width:700px;height:450px;position:relative;cursor:pointer;margin:auto;}
+.flash-card{position:absolute;inset:0;background:var(--bg-card);border:2px solid var(--border-color);border-radius:1.5rem;padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:transform .6s cubic-bezier(0.4, 0.2, 0.2, 1),opacity .3s;backface-visibility:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.flash-card.front{z-index:2;transform:rotateY(0deg)}
+.flash-card.back{z-index:1;transform:rotateY(180deg);background:linear-gradient(135deg,var(--bg-card),rgba(245,158,11,.1));border-color:var(--accent-amber)}
+.flash-card-container.flipped .flash-card.front{transform:rotateY(180deg);z-index:1}
+.flash-card-container.flipped .flash-card.back{transform:rotateY(360deg);z-index:2}
+</style>
+</head>
+<body id="appBody" class="theme-dark font-sans">
+
+<!-- KOTAK HOLO TOOLTIP -->
+<div id="holoTooltipBox" class="holo-tooltip"></div>
+
+<!-- SVG KUCING JENAKA -->
+<svg id="cat-jenaka-template" style="display:none;">
+    <g id="kucing-jenaka">
+        <g class="ear-l-jenaka"><polygon points="20,45 5,5 45,25" fill="#f8fafc" stroke="#f59e0b" stroke-width="2"/><polygon points="22,38 12,12 38,26" fill="#fde68a"/></g>
+        <g class="ear-r-jenaka"><polygon points="80,45 95,5 55,25" fill="#f8fafc" stroke="#f59e0b" stroke-width="2"/><polygon points="78,38 88,12 62,26" fill="#fde68a"/></g>
+        <circle cx="50" cy="55" r="40" fill="#f8fafc" stroke="#06b6d4" stroke-width="2.5"/>
+        <path d="M 50 15 Q 40 5 30 15 Q 40 25 50 15 Z" fill="#f59e0b"/><path d="M 50 15 Q 60 5 70 15 Q 60 25 50 15 Z" fill="#f59e0b"/><circle cx="50" cy="15" r="4" fill="#d97706"/>
+        <path d="M 14 42 Q 50 25 86 42" fill="none" stroke="#334155" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="50" cy="33" r="12" fill="#cbd5e1" stroke="#06b6d4" stroke-width="2"/><circle cx="50" cy="33" r="4" fill="#020617"/><circle cx="44" cy="27" r="2" fill="#ffffff"/> 
+        <g class="eye-left"><ellipse cx="35" cy="50" rx="5" ry="7" fill="#020617"/><circle cx="33" cy="48" r="2" fill="#ffffff"/><path d="M 28 45 Q 35 40 42 45" fill="none" stroke="#020617" stroke-width="1.5" stroke-linecap="round"/></g>
+        <g class="eye-right"><ellipse cx="65" cy="50" rx="5" ry="7" fill="#020617"/><circle cx="63" cy="48" r="2" fill="#ffffff"/><path d="M 58 45 Q 65 40 72 45" fill="none" stroke="#020617" stroke-width="1.5" stroke-linecap="round"/></g>
+        <ellipse cx="25" cy="62" rx="7" ry="4" fill="#f472b6" opacity="0.7"/><ellipse cx="75" cy="62" rx="7" ry="4" fill="#f472b6" opacity="0.7"/>
+        <polygon points="47,60 53,60 50,64" fill="#f472b6"/>
+        <path d="M 38 65 Q 44 72 50 66 Q 56 72 62 65" fill="none" stroke="#020617" stroke-width="2" stroke-linecap="round"/>
+    </g>
+</svg>
+
+<!-- STARTUP LOADER -->
+<div id="splash" class="font-mono">
+    <div class="absolute inset-0 screensaver-grid opacity-50 pointer-events-none"></div>
+    <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-40 sc-scanline-animation pointer-events-none"></div>
+    <div class="relative w-48 h-48 mb-8 z-10 sc-drift-animation drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+        <div class="atom-orbiter orb-1"></div><div class="atom-orbiter orb-2"></div><div class="atom-orbiter orb-3"></div>
+        <svg viewBox="0 0 100 100" class="w-full h-full relative z-10"><use href="#kucing-jenaka"></use></svg>
+    </div>
+    <div class="text-2xl md:text-3xl font-black text-amber-400 mb-3 uppercase tracking-widest animate-pulse z-10 font-tech">BOOTING ATLAS v7.0...</div>
+    <div class="text-sm md:text-base font-mono text-cyan-400 uppercase bg-slate-900 px-6 py-3 rounded border border-cyan-500/50 mt-2 z-10">
+        <span class="hari-realtime">Hari</span> | <span class="jam-realtime">00:00:00</span>
+    </div>
+</div>
+
+<!-- SCREENSAVER DENGAN LINGKARAN ORBIT & KUCING JENAKA -->
+<div id="techScreensaver" class="hidden">
+    <div class="absolute inset-0 screensaver-grid opacity-30 pointer-events-none"></div>
+    <div class="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-30 sc-scanline-animation pointer-events-none"></div>
+    
+    <div class="relative z-10 flex flex-col items-center justify-center mb-10">
+        <div class="atom-orbiter orb-1" style="width: 300px; height: 300px; margin-top: -150px; margin-left: -150px; border-width: 5px; border-top-color: var(--accent-amber); border-bottom-color: var(--accent-amber); md:width: 500px; md:height: 500px; md:margin-top: -250px; md:margin-left: -250px;"></div>
+        <div class="atom-orbiter orb-3" style="width: 400px; height: 400px; margin-top: -200px; margin-left: -200px; border-width: 5px; border-left-color: var(--accent-emerald); border-right-color: var(--accent-emerald); md:width: 650px; md:height: 650px; md:margin-top: -325px; md:margin-left: -325px;"></div>
+        
+        <div class="w-48 h-48 md:w-72 md:h-72 bg-[#0f172a]/80 backdrop-blur-md rounded-full border-4 border-[var(--medical-cyan)] shadow-[0_0_60px_rgba(6,182,212,0.4)] flex items-center justify-center relative z-20 cat-jenaka-float custom-holo-trigger" data-holo="Klik area ini untuk kembali ke aplikasi utama">
+            <svg viewBox="0 0 100 100" class="w-36 h-36 md:w-56 md:h-56 drop-shadow-[0_0_20px_rgba(255,255,255,0.6)]"><use href="#kucing-jenaka"></use></svg>
+        </div>
+    </div>
+
+    <div class="text-5xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-500 jam-realtime tracking-wider filter drop-shadow-[0_0_40px_rgba(6,182,212,0.8)] z-10 font-tech mt-5">00:00:00</div>
+    <div class="mt-6 md:mt-8 flex items-center gap-4 md:gap-6 text-slate-300 font-medium tracking-widest text-lg md:text-4xl border-t-2 border-b-2 border-cyan-500/40 py-3 md:py-5 px-6 md:px-14 bg-slate-900/60 backdrop-blur-sm z-10 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+        <span class="hari-realtime text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400 text-center">Hari</span>
+        <div class="w-[2px] h-8 md:w-[3px] md:h-12 bg-[var(--medical-cyan)]/50"></div>
+        <span class="text-base md:text-3xl font-mono font-black tracking-widest text-[var(--medical-cyan)] bg-slate-950/80 px-3 py-1.5 md:px-5 md:py-2.5 rounded border border-[var(--medical-cyan)]/50 shadow-[0_0_10px_rgba(6,182,212,0.4)]">WIB</span>
+    </div>
+    
+    <div class="absolute bottom-6 md:bottom-10 text-slate-500 font-mono text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] uppercase animate-pulse z-10 text-center px-4">
+        <i class="fa-solid fa-computer-mouse"></i> Sentuh atau Gerakkan Kursor Untuk Kembali
+    </div>
+</div>
+
+<!-- SETTING SCREENSAVER MODAL -->
+<div id="ssModal" class="modal-overlay">
+    <div class="modal-content !max-w-md text-[var(--text-main)] mx-4">
+        <span class="modal-close" onclick="closeModal('ssModal')">&times;</span>
+        <h3 class="text-xl md:text-2xl font-tech font-black text-[var(--medical-cyan)] mb-4 md:mb-6 border-b border-[var(--border-color)] pb-4"><i class="fa-solid fa-clock-rotate-left mr-2"></i> PENGATURAN LAYAR</h3>
+        
+        <label class="block text-sm md:text-base text-[var(--text-muted)] font-bold mb-4 uppercase tracking-wide">Waktu Tunggu Layar Aktif:</label>
+        <select id="ssTimeoutSelect" class="w-full bg-[var(--bg-main)] border border-[var(--border-color)] rounded-xl px-4 py-3 md:px-5 md:py-4 text-base md:text-lg text-[var(--text-main)] focus:outline-none focus:border-[var(--accent-amber)] font-mono font-bold mb-6 md:mb-8">
+            <option value="60">1 Menit</option>
+            <option value="120" selected>2 Menit (Standar)</option>
+            <option value="300">5 Menit</option>
+            <option value="600">10 Menit</option>
+        </select>
+        
+        <div class="flex gap-3 md:gap-4">
+            <button onclick="triggerScreensaverManual(); closeModal('ssModal');" class="flex-1 bg-blue-600/20 text-blue-400 border border-blue-500/50 hover:bg-blue-600/40 py-3 md:py-4 rounded-xl font-bold uppercase tracking-wider transition-all shadow-md text-sm md:text-base"><i class="fa-solid fa-play mr-2"></i> Coba</button>
+            <button onclick="saveSSConfig()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-slate-900 py-3 md:py-4 rounded-xl font-bold uppercase tracking-wider transition-all shadow-md text-sm md:text-base"><i class="fa-solid fa-save mr-2"></i> Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- INPUT MOTTO BARU MODAL -->
+<div id="mottoModal" class="modal-overlay">
+    <div class="modal-content !max-w-2xl text-[var(--text-main)] mx-4">
+        <span class="modal-close" onclick="closeModal('mottoModal')">&times;</span>
+        <h3 class="text-xl md:text-2xl font-tech font-black text-[var(--medical-cyan)] mb-4 md:mb-6 border-b border-[var(--border-color)] pb-4"><i class="fa-solid fa-quote-right mr-3"></i> KELOLA MOTTO</h3>
+        
+        <div class="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6">
+            <input type="text" id="newMottoInput" placeholder="Ketik motto baru..." class="flex-1 bg-[var(--bg-main)] border-2 border-[var(--border-color)] rounded-xl px-4 py-3 md:px-5 md:py-4 text-base md:text-lg focus:outline-none focus:border-[var(--accent-amber)] font-mono text-[var(--text-main)]">
+            <button onclick="addMotto()" class="bg-[var(--success)] hover:bg-green-500 text-slate-900 px-6 py-3 md:px-8 md:py-4 rounded-xl font-black text-sm md:text-base uppercase tracking-wider shadow-md transition-all whitespace-nowrap"><i class="fa-solid fa-save mr-2"></i> Save</button>
+        </div>
+
+        <div id="mottoList" class="max-h-64 overflow-y-auto space-y-4 pr-2 hide-scrollbar"></div>
+    </div>
+</div>
+
+<div id="app">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside id="sidebar">
+    <header class="p-5 md:p-6 border-b border-[var(--border-color)] flex justify-between items-center bg-[var(--bg-header)] custom-holo-trigger" data-holo="Navigasi ke Modul Evaluasi Tersedia">
+      <div>
+          <h1 class="text-xl md:text-2xl font-black font-tech text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-amber)] to-orange-500">ATLAS GEOTEKNIK</h1>
+          <p class="text-[10px] md:text-xs text-[var(--text-muted)] font-bold tracking-widest uppercase mt-1 md:mt-2">Expert Validation System</p>
+      </div>
+      <button class="md:hidden text-[var(--text-muted)] text-2xl" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
+    </header>
+    <div id="nav-scroll">
+        <!-- Injected by JS -->
+    </div>
+    <footer>
+      <div class="flex justify-between mb-2 mono-font text-sm md:text-base"><span>Progres Master</span><span id="progress-text" class="text-[var(--accent-amber)] font-bold">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="flex justify-between mt-4 text-xs md:text-sm uppercase font-bold text-[var(--text-muted)]">
+        <span>✅ <span id="answered-count" class="text-[var(--accent-emerald)]">0</span>/110 Kuis</span>
+      </div>
+    </footer>
+  </aside>
+
+  <main id="main">
+    <!-- HEADER PANEL: 1 Baris Sejajar Tanpa Turun (Flex No-Wrap & Scrollable) -->
+    <header class="w-full bg-[var(--bg-header)] backdrop-blur-md p-3 md:p-4 border-b border-[var(--border-color)] flex flex-nowrap justify-between items-center gap-4 shadow-md z-40 shrink-0 overflow-x-auto hide-scrollbar">
+        
+        <!-- KIRI: Pencarian & Mode Akademik/Lapangan -->
+        <div class="flex items-center gap-2 md:gap-4 justify-start shrink-0">
+            <button class="btn-icon lg:hidden custom-holo-trigger !w-10 !h-10 md:!w-11 md:!h-11 shrink-0" data-holo="Buka/Tutup Menu Samping" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <button class="simple-toggle transition-all shadow-sm custom-holo-trigger !text-sm md:!text-base !px-3 !py-1.5 md:!px-4 md:!py-2 shrink-0" data-holo="Ubah mode bahasa: Penjelasan Teoritis vs Praktik Lapangan" id="simple-toggle" onclick="toggleSimpleMode()">
+                <span id="simple-icon" class="text-lg md:text-xl">🎓</span> <span id="simple-label" class="hidden sm:inline">Akademik</span>
+            </button>
+            <div id="search-box" class="hidden xl:block relative w-full max-w-[240px] custom-holo-trigger shrink-0" data-holo="Ketik untuk mencari materi spesifik geoteknik">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-2.5 text-[var(--text-muted)] text-base"></i>
+                <input type="text" id="search-input" placeholder="Cari materi..." oninput="doSearch(this.value)" class="w-full bg-[var(--bg-main)] border border-[var(--border-color)] rounded-full pl-10 pr-4 py-2 text-sm text-[var(--text-main)] focus:outline-none focus:border-[var(--accent-amber)] transition-all font-bold">
+                <div id="search-results" class="absolute top-12 left-0 w-72 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg hidden overflow-hidden z-50 max-h-64 overflow-y-auto shadow-2xl"></div>
+            </div>
+        </div>
+
+        <!-- TENGAH: Waktu & Hari Berbentuk Pill Bercahaya Sesuai Gambar -->
+        <div class="flex justify-center items-center shrink-0 custom-holo-trigger" data-holo="Klik untuk mengatur waktu tunggu Screensaver Animasi">
+            <div class="bg-[#020617] border border-[#06b6d4] py-1.5 px-8 md:py-2 md:px-12 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.4)] flex flex-col items-center justify-center cursor-pointer hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all min-w-[200px]">
+                <div class="hari-realtime text-[#f59e0b] font-bold tracking-widest uppercase text-[10px] md:text-xs mb-0.5 whitespace-nowrap">HARI, DD MMM YYYY</div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-[#06b6d4] text-sm md:text-base"></i>
+                    <span class="jam-realtime text-xl md:text-2xl font-black text-[#38bdf8] font-tech tracking-wider drop-shadow-md">00:00:00</span> 
+                    <span class="text-[10px] md:text-xs text-slate-400 font-bold mt-1 tracking-widest">WIB</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KANAN: Deretan Icon Tool -->
+        <div class="flex items-center gap-2 md:gap-3 justify-end shrink-0">
+            <button class="btn-icon !w-10 !h-10 md:!w-11 md:!h-11 bg-[var(--medical-cyan)]/10 text-[var(--medical-cyan)] border-[var(--medical-cyan)]/30 hover:bg-[var(--medical-cyan)]/20 custom-holo-trigger shrink-0" data-holo="Buka Panduan Sistem" onclick="openModal('helpModal')" title="Help System"><i class="fa-solid fa-circle-question"></i></button>
+            <button class="btn-icon !w-10 !h-10 md:!w-11 md:!h-11 bg-[var(--simple)]/10 text-[var(--simple)] border-[var(--simple)]/30 hover:bg-[var(--simple)]/20 custom-holo-trigger shrink-0" data-holo="Lihat Informasi Kontak & Profil Programmer" onclick="document.getElementById('programmer-panel').scrollIntoView({behavior:'smooth'})" title="Kridit Programmer"><svg viewBox="0 0 100 100" class="w-6 h-6 md:w-7 md:h-7"><use href="#kucing-jenaka"></use></svg></button>
+            <button class="btn-icon !w-10 !h-10 md:!w-11 md:!h-11 bg-[var(--accent-emerald)]/10 text-[var(--accent-emerald)] border-[var(--accent-emerald)]/30 hover:bg-[var(--accent-emerald)]/20 custom-holo-trigger shrink-0" data-holo="Mode Latihan Flashcard" onclick="openFlashcards()" title="Latihan Flashcard"><i class="fa-solid fa-clone"></i></button>
+            <button class="btn-icon !w-10 !h-10 md:!w-11 md:!h-11 bg-blue-500/10 text-blue-400 border-blue-500/30 hover:bg-blue-500/20 custom-holo-trigger shrink-0" data-holo="Perbesar/Perkecil Teks Modul" onclick="toggleZoom()" title="Zoom Teks"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+            <button class="btn-icon !w-10 !h-10 md:!w-11 md:!h-11 bg-[var(--accent-amber)]/10 text-[var(--accent-amber)] border-[var(--accent-amber)]/30 hover:bg-[var(--accent-amber)]/20 custom-holo-trigger hidden sm:flex shrink-0" data-holo="Ujian Simulasi Acak" onclick="startExam()" title="Ujian Acak"><i class="fa-solid fa-file-signature"></i></button>
+            
+            <div class="w-[1px] h-6 bg-[var(--border-color)] mx-1 shrink-0"></div>
+            <button class="btn-icon !w-10 !h-10 md:!w-11 md:!h-11 custom-holo-trigger shrink-0" data-holo="Ganti Tema Warna Layar" onclick="toggleThemeMode()" title="Ganti Tema"><i id="themeIcon" class="fa-solid fa-sun text-[var(--accent-amber)]"></i></button>
+            <button class="btn-icon !w-10 !h-10 md:!w-11 md:!h-11 custom-holo-trigger shrink-0" data-holo="Ke Dasbor Utama" onclick="showDashboard()" title="Ke Dasbor Utama"><i class="fa-solid fa-house"></i></button>
+        </div>
+    </header>
+
+    <div id="content" class="flex flex-col relative w-full hide-scrollbar">
+        <!-- VIEW: DASHBOARD UTAMA -->
+        <!-- Memastikan h-auto agar fit content tanpa perlu scroll di dalam tiap card -->
+        <div id="dashboard-view" class="w-full flex flex-col gap-4 lg:gap-5 animate-fadeIn pb-6 h-auto">
+            
+            <!-- Baris 1: 3 Metric Cards -->
+            <div class="grid grid-cols-3 gap-3 md:gap-5 shrink-0">
+                <div class="border border-[var(--medical-cyan)] p-3 md:p-5 rounded-xl bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg-main)] text-center relative overflow-hidden shadow-inner flex flex-col justify-center items-center h-24 md:h-28 custom-holo-trigger" data-holo="Jumlah pertanyaan yang dijawab.">
+                    <i class="fa-solid fa-file-pen text-4xl md:text-6xl opacity-10 absolute -right-2 -bottom-2 text-[var(--medical-cyan)]"></i>
+                    <h3 class="text-[10px] md:text-xs font-mono font-bold text-[var(--text-muted)] uppercase tracking-widest hidden sm:block">Total Soal Terjawab</h3>
+                    <h3 class="text-[9px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-widest sm:hidden">Terjawab</h3>
+                    <p class="text-2xl md:text-4xl font-tech font-black text-[var(--medical-cyan)] mt-1 drop-shadow-md" id="dash-metric-total">0</p>
+                </div>
+                <div class="border border-[var(--accent-amber)] p-3 md:p-5 rounded-xl bg-[var(--bg-card)] text-center relative overflow-hidden shadow-inner flex flex-col justify-center items-center h-24 md:h-28 custom-holo-trigger" data-holo="Persentase tebakan benar.">
+                    <i class="fa-solid fa-bullseye text-4xl md:text-6xl opacity-10 absolute -right-2 -bottom-2 text-[var(--accent-amber)]"></i>
+                    <h3 class="text-[10px] md:text-xs font-mono font-bold text-[var(--text-muted)] uppercase tracking-widest hidden sm:block">Akurasi Jawaban</h3>
+                    <h3 class="text-[9px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-widest sm:hidden">Akurasi</h3>
+                    <p class="text-2xl md:text-4xl font-tech font-black text-[var(--accent-amber)] mt-1 drop-shadow-md" id="dash-metric-acc">0%</p>
+                </div>
+                <div class="border border-[var(--accent-emerald)] p-3 md:p-5 rounded-xl bg-[var(--bg-card)] text-center relative overflow-hidden shadow-inner flex flex-col justify-center items-center h-24 md:h-28 custom-holo-trigger" data-holo="Total durasi belajar.">
+                    <i class="fa-solid fa-stopwatch text-4xl md:text-6xl opacity-10 absolute -right-2 -bottom-2 text-[var(--accent-emerald)]"></i>
+                    <h3 class="text-[10px] md:text-xs font-mono font-bold text-[var(--text-muted)] uppercase tracking-widest hidden sm:block">Waktu Sesi Aktif</h3>
+                    <h3 class="text-[9px] font-mono font-bold text-[var(--text-muted)] uppercase tracking-widest sm:hidden">Waktu</h3>
+                    <p class="text-2xl md:text-4xl font-tech font-black text-[var(--accent-emerald)] mt-1 drop-shadow-md" id="dash-metric-time">00:00</p>
+                </div>
+            </div>
+
+            <!-- Baris 2: Radar Grafik -->
+            <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 md:p-5 shadow-xl flex flex-col lg:flex-row gap-4 lg:gap-6 items-center flex-1 min-h-[300px] custom-holo-trigger" data-holo="Jaring metrik 11 topik Geoteknik secara real-time.">
+                <div class="w-full lg:w-1/3 flex flex-col justify-center h-full">
+                    <h2 class="font-tech text-lg md:text-xl font-black text-[var(--medical-cyan)] tracking-wider uppercase mb-2 md:mb-3"><i class="fa-solid fa-chart-radar mr-2"></i>METRIK AI</h2>
+                    <p class="text-xs md:text-sm text-[var(--text-muted)] mb-4 mono-font leading-relaxed hidden sm:block">Sistem memantau rekapitulasi ketepatan analitik Anda pada 11 modul Geoteknik secara real-time.</p>
+                    
+                    <div class="flex gap-3 mt-auto shrink-0 w-full">
+                        <button onclick="saveProgress()" class="flex-1 bg-[var(--accent-emerald)] hover:bg-emerald-400 text-slate-900 py-2.5 md:py-3 rounded-lg font-bold text-xs md:text-sm uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 custom-holo-trigger" data-holo="Simpan evaluasi secara permanen"><i class="fa-solid fa-save"></i> Save</button>
+                        <button onclick="resetProgress()" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white py-2.5 md:py-3 rounded-lg font-bold text-xs md:text-sm uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 custom-holo-trigger" data-holo="Hapus seluruh progres"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-2/3 radar-container bg-[var(--bg-main)] border border-[var(--border-color)] rounded-xl p-2 shadow-inner">
+                    <canvas id="liveRadarChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Baris 3: Help System & Profil Programmer -->
+            <!-- Dibuat h-auto agar meregang sesuai isi, dan menghapus overflow-y-auto di dalamnya -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5 shrink-0 flex-1" id="programmer-panel">
+                <!-- Col 1: Help System (Dibuat full text tanpa scroll) -->
+                <div class="bg-[var(--bg-card)] p-4 md:p-6 rounded-xl border border-[var(--accent-amber)] shadow-lg flex flex-col h-auto custom-holo-trigger" data-holo="Ringkasan fungsi utama dan perintah bantuan sistem">
+                    <h3 class="text-base md:text-lg font-tech font-black text-white mb-4 border-b border-[var(--border-color)] pb-3 flex items-center">
+                        <i class="fa-solid fa-circle-info text-[var(--accent-amber)] mr-3 text-xl md:text-2xl"></i>
+                        <span class="bg-blue-800 px-3 py-1.5 rounded text-white tracking-widest uppercase text-xs md:text-sm shadow-inner">HELP SYSTEM & GUIDE</span>
+                    </h3>
+                    <div class="space-y-4 text-xs md:text-sm font-mono text-[var(--text-muted)] text-justify leading-relaxed flex-1">
+                        <p><b class="text-[var(--medical-cyan)]">Evaluasi & Ujian:</b> Akses 11 modul materi di menu samping. Kerjakan 110 kuis terintegrasi dengan umpan balik AI seketika. Fitur Ujian Acak mensimulasikan tes sertifikasi nyata dengan batas waktu dan ekspor hasil ke PDF/WhatsApp.</p>
+                        <p><b class="text-[var(--accent-emerald)]">Asisten GeoBot:</b> Klik ikon robot di sudut layar untuk berkonsultasi seputar mekanika tanah, desain pondasi, atau penggunaan software geoteknik mutakhir. Dilengkapi fungsi jalan pintas informasi pakar.</p>
+                        <p><b class="text-[var(--accent-amber)]">Flashcard Interaktif:</b> Latih memori visual geoteknik Anda melalui menu flashcard yang kini sepenuhnya mendukung integrasi *keyboard* pintar (Panah Arah untuk berpindah, Spasi/Enter untuk membalik kartu).</p>
+                        <p><b class="text-[var(--simple)]">Pelindung Layar:</b> Sistem akan mendeteksi inaktivitas secara otomatis dan memunculkan proyeksi screensaver animasi orbit 3D untuk menghemat daya pandang mata Anda (durasi dapat diatur).</p>
+                    </div>
+                </div>
+
+                <!-- Col 2: Profil Programmer (Tampil utuh tanpa scroll) -->
+                <div class="bg-[var(--bg-card)] p-4 md:p-6 rounded-xl border border-[var(--medical-cyan)] shadow-lg flex flex-col h-auto custom-holo-trigger" data-holo="Informasi kontak Pengembang Aplikasi">
+                    <h3 class="text-base md:text-lg font-tech font-black text-[var(--medical-cyan)] mb-4 border-b border-[var(--border-color)] pb-3 flex items-center uppercase tracking-widest">
+                        <i class="fa-solid fa-code mr-3 text-xl md:text-2xl"></i> PROFIL PROGRAMMER
+                    </h3>
+                    <div class="flex flex-col items-center gap-4 flex-1">
+                        <div class="flex items-center justify-start gap-4 w-full">
+                            <div class="relative w-16 h-16 md:w-20 md:h-20 shrink-0 flex items-center justify-center rounded-full border-2 border-[var(--medical-cyan)] bg-white shadow-[0_0_15px_rgba(6,182,212,0.6)] p-1.5 cat-jenaka-float">
+                                <svg viewBox="0 0 100 100" class="w-full h-full relative z-10 drop-shadow-md"><use href="#kucing-jenaka"></use></svg>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="font-tech font-black text-[var(--medical-cyan)] text-sm md:text-base uppercase tracking-widest">MOHAMAD HARTADI (ADI)</h4>
+                                <p class="font-mono text-[10px] md:text-xs text-[var(--text-muted)] mt-1 leading-snug">Tenaga Ahli Bendungan & Software Engineer</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-2 md:gap-3 w-full font-mono mt-2">
+                            <a href="https://www.facebook.com/m.hartadi" target="_blank" class="flex flex-col items-center justify-center bg-[#172554]/40 border border-[#1e3a8a] hover:bg-[#1e3a8a]/60 hover:-translate-y-1 text-[#60a5fa] py-2 md:py-3 rounded-lg text-[10px] md:text-xs font-bold transition-all duration-300 shadow-sm">
+                                <i class="fa-brands fa-facebook text-lg md:text-xl mb-1"></i> FB Profil
+                            </a>
+                            <a href="https://newbieonline7.blogspot.com/" target="_blank" class="flex flex-col items-center justify-center bg-[#451a03]/40 border border-[#92400e] hover:bg-[#78350f]/60 hover:-translate-y-1 text-[#fbbf24] py-2 md:py-3 rounded-lg text-[10px] md:text-xs font-bold transition-all duration-300 shadow-sm">
+                                <i class="fa-solid fa-globe text-lg md:text-xl mb-1"></i> Web Blog
+                            </a>
+                            <a href="https://wa.me/6282231036047" target="_blank" class="flex flex-col items-center justify-center bg-[#064e3b]/40 border border-[#065f46] hover:bg-[#065f46]/60 hover:-translate-y-1 text-[#34d399] py-2 md:py-3 rounded-lg text-[10px] md:text-xs font-bold transition-all duration-300 shadow-sm">
+                                <i class="fa-brands fa-whatsapp text-lg md:text-xl mb-1"></i> No. WA
+                            </a>
+                        </div>
+                        
+                        <div id="mottoContainer" class="w-full bg-[#020617] border-l-4 border-[var(--medical-cyan)] p-3 md:p-4 flex flex-col items-center justify-center min-h-[70px] transition-opacity duration-500 shadow-[inset_0_0_15px_rgba(6,182,212,0.2)] mt-2 relative group rounded-r-lg">
+                            <button onclick="openMottoModal()" class="absolute -top-3 -right-2 bg-[var(--medical-cyan)] text-[var(--bg-main)] hover:bg-cyan-300 w-8 h-8 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.6)] transition-transform hover:scale-110 flex items-center justify-center z-10 opacity-0 group-hover:opacity-100 md:opacity-100 md:w-10 md:h-10 md:-top-4 md:-right-3" title="Kelola Motto">
+                                <i class="fa-solid fa-pen-to-square text-sm md:text-base"></i>
+                            </button>
+                            <p id="mottoText" class="text-xs md:text-sm font-tech font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-emerald-300 to-amber-300 animate-gradient-text text-center italic leading-relaxed filter drop-shadow-sm w-full px-2"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: MODUL KUIS CONTAINER -->
+        <div id="slide-container" class="hidden pb-10"></div>
+    </div>
+    
+    <!-- BOTTOM NAV -->
+    <div id="bottom-nav" class="hidden justify-between items-center w-full relative border-t-2 border-[var(--border-color)] px-2 md:px-6 py-2">
+        <div class="flex gap-2 md:gap-4 z-10 w-full justify-between sm:justify-start">
+            <button class="btn-icon w-auto px-4 py-2 md:px-6 md:py-3 text-xs md:text-sm font-bold uppercase mono-font custom-holo-trigger border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--border-color)]" data-holo="Mundur ke modul sebelumnya (atau panah kiri)" onclick="prevSlide()"><i class="fa-solid fa-chevron-left mr-1 md:mr-2"></i> PREV</button>
+            <button class="btn-icon w-auto px-4 py-2 md:px-6 md:py-3 text-xs md:text-sm font-bold uppercase mono-font bg-[var(--medical-cyan)] text-slate-900 border-none hover:bg-cyan-400 custom-holo-trigger ml-auto sm:ml-0" data-holo="Lanjut ke modul pembelajaran berikutnya (atau panah kanan)" onclick="nextSlide()">NEXT <i class="fa-solid fa-chevron-right ml-1 md:ml-2"></i></button>
+        </div>
+        <div class="absolute inset-x-0 flex justify-center items-center pointer-events-none hidden sm:flex">
+            <button class="btn-icon text-xl md:text-2xl custom-holo-trigger pointer-events-auto shadow-[0_0_10px_rgba(245,158,11,0.3)] border-[var(--border-color)] hover:border-[var(--accent-amber)] transition-all bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--accent-amber)] hover:text-white" style="width: 50px; height: 50px;" data-holo="Tandai modul" id="bookmark-btn" onclick="toggleBookmark()"><i class="fa-regular fa-bookmark"></i></button>
+        </div>
+    </div>
+  </main>
+</div>
+
+<!-- HELP SYSTEM MODAL -->
+<div id="helpModal" class="modal-overlay">
+    <div class="modal-content text-[var(--text-main)] !max-w-4xl mx-4 p-4 md:p-8">
+        <span class="modal-close" onclick="closeModal('helpModal')">&times;</span>
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4 border-b-2 border-[var(--medical-cyan)] pb-4 mb-5 md:mb-6 pr-6">
+            <i class="fa-solid fa-circle-question text-3xl md:text-5xl text-[var(--medical-cyan)] animate-pulse hidden md:block"></i>
+            <h2 class="text-xl md:text-3xl font-black font-tech uppercase tracking-wide">Panduan Sistem Geoteknik</h2>
+        </div>
+        <div class="space-y-4 md:space-y-6 text-sm md:text-base text-[var(--text-muted)] leading-relaxed mono-font max-h-[70vh] overflow-y-auto hide-scrollbar">
+            
+            <p class="mb-3 md:mb-5">Mega Atlas Geoteknik dirancang sebagai portal integrasi edukasi, validasi numerik, dan evaluasi lapangan yang komprehensif tanpa memerlukan koneksi memori server eksternal.</p>
+
+            <div class="overflow-x-auto rounded-xl border-2 border-[var(--border-color)] shadow-md">
+                <table class="w-full text-left border-collapse min-w-[600px]">
+                    <thead>
+                        <tr class="bg-slate-800 text-slate-200 uppercase tracking-wider text-xs md:text-sm">
+                            <th class="p-3 md:p-4 border-b-2 border-[var(--border-color)] font-bold w-1/4">Fitur / Kategori</th>
+                            <th class="p-3 md:p-4 border-b-2 border-[var(--border-color)] font-bold w-1/3">Fungsi Terintegrasi</th>
+                            <th class="p-3 md:p-4 border-b-2 border-[var(--border-color)] font-bold">Cara Akses & Operasi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-[var(--text-main)] text-xs md:text-sm">
+                        <tr class="border-b border-[var(--border-color)] bg-[var(--medical-cyan)]/10">
+                            <td class="p-3 md:p-4 align-top"><span class="bg-cyan-900 text-cyan-300 px-2 md:px-3 py-1 rounded font-bold border border-cyan-700 block text-center w-max"><i class="fa-solid fa-graduation-cap mr-1"></i> Mode Lapangan</span></td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)] text-cyan-100">Mentransformasi bahasa literasi akademis rumit menjadi analogi logis lapangan harian proyek (mandor/operator).</td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)]">Tekan tombol *Toggle* <b class="text-[var(--medical-cyan)]">Akademik/Lapangan</b> di sudut kiri bilah navigasi Header utama.</td>
+                        </tr>
+                        <tr class="border-b border-[var(--border-color)] bg-[var(--accent-amber)]/10">
+                            <td class="p-3 md:p-4 align-top"><span class="bg-amber-900 text-amber-300 px-2 md:px-3 py-1 rounded font-bold border border-amber-700 block text-center w-max"><i class="fa-solid fa-file-signature mr-1"></i> Ujian Acak</span></td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)] text-amber-100">Memilih 25 soal acak dari bank data (110 pertanyaan) dengan hitungan mundur komprehensif 40 menit layaknya sertifikasi aktual.</td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)]">Klik ikon kertas berpena pada area menu Header atas. Kumpulkan jawaban Anda atau biarkan AI menilainya jika waktu habis.</td>
+                        </tr>
+                        <tr class="border-b border-[var(--border-color)] bg-[var(--accent-emerald)]/10">
+                            <td class="p-3 md:p-4 align-top"><span class="bg-emerald-900 text-emerald-300 px-2 md:px-3 py-1 rounded font-bold border border-emerald-700 block text-center w-max"><i class="fa-solid fa-clone mr-1"></i> Flashcard Cepat</span></td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)] text-emerald-100">Meningkatkan insting reaktif ingatan teori pondasi atau rumus melalui kartu bolak-balik berkecepatan tinggi.</td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)]">Klik ikon dua kotak (kartu memori) di kanan atas. Bisa dioperasikan cepat menggunakan keyboard: <b>Panah (Kanan/Kiri)</b> dan <b>Spasi/Enter</b>.</td>
+                        </tr>
+                        <tr class="bg-[var(--simple)]/10">
+                            <td class="p-3 md:p-4 align-top"><span class="bg-pink-900 text-pink-300 px-2 md:px-3 py-1 rounded font-bold border border-pink-700 block text-center w-max"><i class="fa-solid fa-chart-radar mr-1"></i> Metrik AI</span></td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)] text-pink-100">Jaring laba-laba parameter dinamis yang mengevaluasi secara *real-time* grafik kekuatan spesialiasi diri Anda pada ke 11 materi modul.</td>
+                            <td class="p-3 md:p-4 align-top border-l border-[var(--border-color)]">Buka Dasbor Utama (Ikon Rumah). Semakin sering jawaban Anda akurat pada sub-topik tertentu, jejaring keahlian pada topik tersebut akan meluas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Latihan Flashcard Screen -->
+<div id="flash-screen" class="flex-col">
+  <div class="flex justify-between items-center w-full max-w-4xl bg-[var(--bg-card)] p-4 md:p-6 border-b-2 border-[var(--accent-emerald)] shrink-0 rounded-t-xl md:rounded-t-3xl mx-auto mt-4 md:mt-8 mx-2 md:mx-auto">
+    <h2 class="font-bold font-tech text-[var(--accent-emerald)] text-lg md:text-2xl uppercase tracking-widest"><i class="fa-solid fa-clone mr-2"></i> FLASHCARD MEMORI</h2>
+    <button class="text-3xl md:text-4xl text-[var(--text-muted)] hover:text-white transition-colors" onclick="closeFlashcards()">&times;</button>
+  </div>
+  <div class="flex-1 flex items-center justify-center w-full max-w-4xl p-4 md:p-6 mx-auto bg-[var(--bg-main)]">
+    <div class="flash-card-container !max-w-2xl !h-[350px] md:!h-[450px] w-full" id="flash-card-container" onclick="flipFlashcard()">
+      <div class="flash-card front border-2 md:border-4 !p-4 md:!p-8">
+        <div class="text-[var(--medical-cyan)] text-xs md:text-sm font-bold uppercase tracking-widest mb-4 md:mb-8"><i class="fa-solid fa-hand-pointer mr-2"></i> Ketuk / Tekan SPASI untuk Membalik</div>
+        <div class="text-lg md:text-2xl text-[var(--text-main)] font-medium font-sans leading-relaxed px-2 md:px-6" id="flash-front-text">Memuat...</div>
+      </div>
+      <div class="flash-card back border-2 md:border-4 !p-4 md:!p-8 overflow-y-auto hide-scrollbar">
+        <div class="text-[var(--accent-amber)] text-xs md:text-sm font-bold uppercase tracking-widest mb-4 md:mb-6">Jawaban / Analisis Pakar</div>
+        <div class="text-base md:text-xl text-[var(--text-main)] font-sans leading-relaxed px-2 md:px-6" id="flash-back-text">...</div>
+      </div>
+    </div>
+  </div>
+  <div class="flex justify-center items-center gap-4 md:gap-8 w-full max-w-4xl bg-[var(--bg-card)] p-4 md:p-6 border-t-2 border-[var(--border-color)] shrink-0 rounded-b-xl md:rounded-b-3xl mx-auto mb-4 md:mb-8 mx-2 md:mx-auto">
+    <button class="btn-icon w-auto px-4 py-3 md:px-8 md:py-4 text-sm md:text-lg font-bold bg-[var(--bg-main)]" onclick="prevFlashcard()">◀ Prev</button>
+    <div class="text-sm md:text-xl font-mono text-[var(--medical-cyan)] font-bold tracking-wider px-4 py-2 md:px-6 border border-[var(--border-color)] rounded-lg" id="flash-stats">1/110</div>
+    <button class="btn-icon w-auto px-4 py-3 md:px-8 md:py-4 text-sm md:text-lg font-bold bg-[var(--accent-emerald)] text-slate-900 border-none hover:bg-emerald-400" onclick="nextFlashcard()">Next ▶</button>
+  </div>
+</div>
+
+<!-- Ujian Acak Screen -->
+<div id="exam-screen" class="flex-col bg-[var(--bg-main)] z-[10000]">
+  <div class="flex justify-between items-center bg-[var(--bg-card)] p-4 md:p-6 border-b-2 border-[var(--medical-cyan)] shrink-0 w-full shadow-md z-10 flex-wrap gap-2">
+    <div class="font-bold font-tech text-[var(--medical-cyan)] text-base md:text-xl uppercase tracking-widest w-full sm:w-auto"><i class="fa-solid fa-file-signature mr-2"></i> UJIAN SERTIFIKASI</div>
+    <div id="exam-timer" class="text-xl md:text-3xl font-mono font-black text-[var(--accent-amber)] bg-slate-950 px-4 py-1.5 md:px-6 md:py-2 rounded-lg border border-amber-500/30">40:00</div>
+    <div id="exam-progress" class="text-sm md:text-base text-[var(--text-muted)] font-mono font-bold border border-[var(--border-color)] px-3 py-1.5 md:px-5 md:py-2 rounded-lg bg-slate-900">1 / 25</div>
+  </div>
+  <div id="exam-body" class="max-w-5xl mx-auto w-full flex-1 overflow-y-auto p-4 md:p-8 hide-scrollbar"></div>
+  <div class="flex justify-between md:justify-center gap-2 md:gap-6 bg-[var(--bg-card)] p-4 md:p-6 border-t-2 border-[var(--border-color)] shrink-0 w-full z-10 flex-wrap sm:flex-nowrap">
+    <button class="btn-icon w-full sm:w-auto px-4 py-3 md:px-8 md:py-4 text-xs md:text-base font-bold order-2 sm:order-1" onclick="prevExamQ()">◀ Prev</button>
+    <button class="btn-icon w-full sm:w-auto px-4 py-3 md:px-10 md:py-4 text-xs md:text-base font-bold bg-[var(--accent-amber)] text-slate-900 border-none hover:bg-orange-400 shadow-md uppercase tracking-wider order-1 sm:order-2 mb-2 sm:mb-0" onclick="submitExam()">✅ Selesai</button>
+    <button class="btn-icon w-full sm:w-auto px-4 py-3 md:px-8 md:py-4 text-xs md:text-base font-bold bg-[var(--medical-cyan)] text-slate-900 border-none hover:bg-cyan-400 uppercase tracking-wider order-3" onclick="nextExamQ()">Next ▶</button>
+  </div>
+</div>
+
+<!-- Hasil Ujian & Ekspor -->
+<div id="exam-result" class="flex-col bg-[var(--bg-main)] overflow-y-auto hide-scrollbar z-[10000] p-4 md:p-8">
+  <div class="bg-[var(--bg-card)] border-2 border-[var(--accent-amber)] p-6 md:p-10 rounded-2xl md:rounded-3xl max-w-3xl w-full text-center shadow-2xl flex flex-col items-center my-auto mx-auto">
+      <div class="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-amber)] to-orange-500 mb-4 md:mb-6 drop-shadow-lg font-tech leading-none" id="result-score">85%</div>
+      <div class="text-xl md:text-2xl text-[var(--text-muted)] mb-6 md:mb-8 font-bold uppercase tracking-widest" id="result-msg">Sangat Baik, Engineer!</div>
+      
+      <div class="grid grid-cols-2 gap-4 md:gap-6 w-full mb-6 md:mb-8">
+        <div class="bg-[var(--bg-main)] p-4 md:p-6 rounded-xl border-2 border-[var(--success)] shadow-inner"><div class="text-4xl md:text-5xl font-bold text-[var(--success)] mono-font mb-1 md:mb-2" id="res-correct">0</div><div class="text-[10px] md:text-sm text-[var(--text-muted)] uppercase tracking-widest font-bold">Benar</div></div>
+        <div class="bg-[var(--bg-main)] p-4 md:p-6 rounded-xl border-2 border-[var(--danger)] shadow-inner"><div class="text-4xl md:text-5xl font-bold text-[var(--danger)] mono-font mb-1 md:mb-2" id="res-wrong">0</div><div class="text-[10px] md:text-sm text-[var(--text-muted)] uppercase tracking-widest font-bold">Salah</div></div>
+      </div>
+      
+      <div class="w-full flex flex-col gap-3 md:gap-4 mb-6 md:mb-8 bg-[var(--bg-main)] p-4 md:p-6 rounded-xl border border-[var(--border-color)] shadow-inner">
+          <input type="text" id="pesertaNama" placeholder="Nama Peserta (Opsional)" class="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg px-4 py-3 text-[var(--text-main)] font-mono text-sm md:text-base focus:border-[var(--accent-amber)]">
+          <div class="flex gap-3 md:gap-4 flex-col sm:flex-row">
+              <input type="text" id="pesertaWA" placeholder="No. WA Peserta" class="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg px-4 py-3 text-[var(--text-main)] font-mono text-sm md:text-base focus:border-[var(--accent-amber)]">
+              <input type="text" id="pengujiWA" placeholder="No. WA Penguji" class="w-full bg-[var(--bg-card)] border border-[var(--border-color)] rounded-lg px-4 py-3 text-[var(--text-main)] font-mono text-sm md:text-base focus:border-[var(--accent-amber)]">
+          </div>
+          
+          <div class="flex gap-3 md:gap-4 mt-2 flex-col sm:flex-row">
+              <button onclick="eksporPDF()" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 md:py-4 rounded-lg shadow-md text-sm md:text-base uppercase hover:-translate-y-1 transition-transform"><i class="fa-solid fa-file-pdf mr-2"></i> Ekspor PDF</button>
+              <button onclick="kirimWA()" class="flex-1 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold py-3 md:py-4 rounded-lg shadow-md text-sm md:text-base uppercase hover:-translate-y-1 transition-transform"><i class="fa-brands fa-whatsapp mr-2"></i> Kirim WA</button>
+          </div>
+      </div>
+
+      <button class="w-full sm:w-auto px-8 md:px-12 py-3 md:py-4 rounded-full text-[var(--text-main)] border border-[var(--border-color)] hover:border-[var(--accent-amber)] font-bold text-sm md:text-base uppercase transition-all shadow-sm hover:scale-105" onclick="closeExamResult()">Kembali ke Dasbor</button>
+  </div>
+</div>
+
+<!-- Elemen PDF Content -->
+<div id="pdf-content" class="hidden bg-white text-black p-10 font-sans text-lg">
+    <h1 class="text-3xl font-black text-center text-blue-800 mb-4 border-b-4 border-blue-800 pb-4">HASIL UJIAN SERTIFIKASI GEOTEKNIK</h1>
+    <div class="mb-6 space-y-2">
+        <p><strong>Nama Peserta:</strong> <span id="pdf-nama"></span></p>
+        <p><strong>No. WA Peserta:</strong> <span id="pdf-wa"></span></p>
+        <p><strong>Tanggal Ujian:</strong> <span id="pdf-tgl"></span></p>
+    </div>
+    <div class="mb-8 p-6 bg-gray-100 border-2 border-gray-300 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4">Skor Akhir: <span id="pdf-skor" class="text-blue-600"></span></h2>
+        <p class="mb-2">Total Benar: <span id="pdf-benar" class="font-bold text-green-600"></span></p>
+        <p class="mb-2">Total Salah: <span id="pdf-salah" class="font-bold text-red-600"></span></p>
+        <p>Predikat: <span id="pdf-predikat" class="font-bold"></span></p>
+    </div>
+    <p class="text-sm text-gray-500 text-center mt-12 italic">Dicetak melalui Mega Atlas Geoteknik v7.0 - Integrated System</p>
+</div>
+
+<!-- FLOATING CHATBOT -->
+<div class="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-[900] flex flex-col items-end gap-3 md:gap-4 pointer-events-none font-mono">
+    
+    <div id="chatWindow" class="absolute bottom-20 md:bottom-24 right-0 w-[calc(100vw-2rem)] sm:w-[400px] h-[60vh] max-h-[500px] bg-[var(--bg-card)] border-2 border-[var(--accent-amber)] rounded-2xl flex-col hidden overflow-hidden shadow-[0_0_30px_rgba(245,158,11,0.5)] pointer-events-auto">
+        <div class="bg-gradient-to-r from-[var(--bg-main)] to-[var(--bg-card)] p-3 md:p-4 border-b border-[var(--accent-amber)] shadow-sm shrink-0 flex justify-between items-start">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-white rounded-full border border-[var(--accent-amber)] p-1 shrink-0"><svg viewBox="0 0 100 100" class="w-full h-full"><use href="#kucing-jenaka"></use></svg></div>
+                <div>
+                    <h4 class="font-tech text-xs md:text-sm font-black text-[var(--accent-amber)] uppercase">GEOBOT</h4>
+                    <span class="text-[9px] md:text-[10px] text-[var(--medical-cyan)] block mb-1">● AI ASSISTANT</span>
+                </div>
+            </div>
+            <button onclick="toggleChatWindow()" class="text-[var(--text-muted)] hover:text-red-400 text-2xl md:text-3xl font-black">&minus;</button>
+        </div>
+        
+        <div id="chatMessages" class="flex-1 p-3 md:p-4 overflow-y-auto space-y-3 font-mono text-xs md:text-sm text-[var(--text-main)] bg-[var(--bg-main)] hide-scrollbar">
+            <div class="bg-[var(--bg-card)] p-3 rounded-lg border border-[var(--border-color)] max-w-[90%] text-justify shadow-sm">
+                <span class="text-[var(--accent-amber)] font-black mb-2 block border-b border-[var(--border-color)] pb-1"><i class="fa-solid fa-helmet-safety mr-2"></i> GEOBOT:</span>
+                Salam Konstruksi! Saya asisten Mega Atlas Geoteknik. Ketik pintasan atau tanyakan soal teori geoteknik, navigasi software geostudio, maupun info kelayakan profil ahli!
+                <button onclick="triggerChatShortcut('programmer')" class="mt-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-3 py-1.5 rounded text-xs font-bold w-max shadow-sm hover:scale-105 transition-transform"><i class="fa-solid fa-user-astronaut"></i> Info Profil Ahli</button>
+            </div>
+        </div>
+
+        <form class="p-2 md:p-3 bg-[var(--bg-card)] border-t border-[var(--border-color)] flex gap-2 shrink-0" onsubmit="handleChatSubmit(event)">
+            <input type="text" id="chatInput" autocomplete="off" placeholder="Tanya GeoBot..." class="flex-1 w-0 bg-[var(--bg-main)] border border-[var(--border-color)] rounded-lg px-3 py-2 text-xs md:text-sm focus:border-[var(--accent-amber)] font-bold">
+            <button type="submit" class="bg-[var(--accent-amber)] text-slate-900 px-4 py-2 rounded-lg font-black"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+    </div>
+
+    <div class="flex items-center gap-3 md:gap-4 pointer-events-auto">
+        <button onclick="triggerScreensaverManual()" class="h-12 w-12 md:h-14 md:w-14 rounded-full bg-[var(--bg-card)] border border-[var(--medical-cyan)] flex items-center justify-center text-[var(--medical-cyan)] shadow-lg hover:bg-cyan-900/40 custom-holo-trigger" data-holo="Mode Pelindung Layar">
+            <i class="fa-solid fa-desktop text-xl md:text-2xl"></i>
+        </button>
+        <button onclick="toggleChatWindow()" class="h-14 w-14 md:h-16 md:w-16 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 border-2 border-white flex items-center justify-center text-slate-950 shadow-xl hover:scale-105 transition-transform relative custom-holo-trigger" data-holo="Asisten AI GeoBot">
+            <i class="fa-solid fa-robot text-2xl md:text-3xl"></i>
+            <span class="absolute top-0 right-0 h-3 w-3 md:h-4 md:w-4 bg-[var(--medical-cyan)] rounded-full border-2 border-white animate-ping"></span>
+        </button>
+    </div>
+</div>
+
+<script>
+// ===================== DATA MATERI & KUIS =====================
+const createQuiz = (questions) => questions.map(q => ({
+    q: q[0], options: q[1], correct: q[2], exp: q[3]
+}));
+
+const slidesData = [
+{
+  id: 1, title: "Mekanika Tanah Dasar", subtitle: "Sifat Fisis dan Klasifikasi Tanah", tag: "Soil Mechanics",
+  content: `<div class="info-card academic-only"><h3>🔬 Sifat Indeks & Klasifikasi</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Mekanika tanah mempelajari sifat fisik dan mekanik massa tanah. Parameter utama meliputi Kadar Air (w), Angka Pori (e), dan Berat Volume (γ). Klasifikasi tanah didasarkan pada distribusi butiran dan plastisitas lempung (Batas Atterberg). Pemahaman sifat indeks ini krusial untuk evaluasi penurunan dan pemadatan di lapangan.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Sifat Tanah</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Tanah terbagi dua tipe utama: berbutir kasar (pasir/kerikil) yang airnya mudah mengalir, dan berbutir halus (lempung/lanau) yang lengket dan menahan air. Untuk membangun gedung, kita harus tahu seberapa padat tanahnya dan apakah ia akan lembek saat terkena air. Jangan pernah skip uji Bor & Sondir sebelum pondasi digali!</p></div>`,
+  quiz: createQuiz([
+    ["Batas kadar air di mana tanah berubah dari keadaan plastis menjadi cair disebut?", ["Batas Susut (Shrinkage Limit)","Batas Plastis (Plastic Limit)","Batas Cair (Liquid Limit)","Indeks Plastisitas"], 2, "Liquid Limit (LL) diuji menggunakan alat Casagrande. Pada batas ini tanah mulai berperilaku seperti cairan kental."],
+    ["Perbandingan antara volume pori (rongga) dengan volume butiran padat dalam suatu massa tanah disebut?", ["Porositas (n)","Angka Pori (e)","Kadar Air (w)","Derajat Kejenuhan (S)"], 1, "Angka Pori (void ratio - e) sangat penting untuk menghitung besaran konsolidasi tanah lempung."],
+    ["Hukum yang mendasari analisis aliran air konstan di dalam pori tanah (permeabilitas) adalah?", ["Hukum Newton","Hukum Hooke","Hukum Terzaghi","Hukum Darcy"], 3, "Hukum Darcy menyatakan kecepatan aliran berbanding lurus dengan gradien hidrolik (v = k.i)."],
+    ["Pengujian laboratorium untuk menentukan kepadatan kering maksimum (MDD) suatu tanah urugan disebut?", ["Standard Proctor Test","Direct Shear Test","Triaxial Test","Uji Konsolidasi"], 0, "Proctor test menghasilkan kurva pemadatan, menentukan MDD dan Kadar Air Optimum (OMC)."],
+    ["Dalam sistem klasifikasi USCS, simbol 'CH' menunjukkan jenis tanah?", ["Pasir bergradasi buruk","Lempung plastisitas tinggi (Fat Clay)","Lanau plastisitas rendah","Kerikil berlempung"], 1, "C = Clay, H = High Plasticity. Tanah CH sangat sensitif terhadap fenomena kembang-susut."],
+    ["Pengujian Atterberg Limit digunakan untuk menentukan batas konsistensi pada kelompok tanah...", ["Berbutir kasar murni","Berbutir halus (Lempung & Lanau)","Batuan sedimen","Gambut/Gambut murni"], 1, "Batas Atterberg hanya relevan dan bisa dilakukan pada fraksi tanah berbutir halus yang lolos saringan No. 200."],
+    ["Tanah dengan Indeks Plastisitas (PI) sangat tinggi dan rentan kembang-susut ekstrem umumnya mengandung mineral...", ["Kuarsa","Feldspar","Montmorillonite","Kalsit"], 2, "Mineral Montmorillonite (kelompok smektit) memiliki ikatan antar-lapis yang lemah, menyerap air berlebih dan sangat ekspansif."],
+    ["Parameter kepadatan tanah di lapangan untuk keperluan Quality Control (QC) timbunan diukur menggunakan metode...", ["Uji Vane Shear","Sand Cone Test (Kerucut Pasir)","Uji Geser Langsung","CBR Laboratorium"], 1, "Sand cone test mengevaluasi berat volume basah dan kering di lapangan untuk dibandingkan dengan MDD dari Proctor test lab."],
+    ["Hubungan tegangan-regangan dan kuat geser tanah dengan kontrol drainase akurat (UU, CU, CD) dianalisis melalui uji...", ["Uji Konsolidasi","Triaksial (Triaxial Test)","Analisis Saringan","Uji Permeabilitas Falling Head"], 1, "Triaksial memberikan kontrol absolut pada tekanan sel dan drainase air pori untuk mensimulasikan kondisi pembebanan lapangan."],
+    ["Jika seluruh rongga pori tanah terisi penuh oleh air tanpa ada udara yang tersisa, maka derajat kejenuhan (S) tanah bernilai...", ["0%","50%","75%","100% (atau S = 1)"], 3, "Pada kondisi S = 100%, tanah berstatus jenuh air penuh (saturated), yang merupakan kondisi kritis desain kestabilan tanah."]
+  ])
+},
+{
+  id: 2, title: "Analisis Stabilitas Lereng", subtitle: "Kuat Geser & Mitigasi Kelongsoran", tag: "Slope Stability",
+  content: `<div class="info-card academic-only"><h3>⛰️ Faktor Keamanan & Kuat Geser</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Stabilitas lereng dikendalikan oleh perlawanan kuat geser tanah (τ = c + σ tan φ) melawan gaya pendorong gravitasi. Analisis limit equilibrium modern sering diselesaikan dengan metode irisan (Slice Method) seperti Bishop atau Spencer. Faktor Keamanan (SF) wajib > 1.5 untuk operasional jangka panjang.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Lereng & Longsor</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Kalau kita gali tebing tanah liat, jangan dibikin tegak lurus! Bikin terasering (berundak). Air hujan yang masuk ke pori tanah adalah musuh nomor satu pembuat longsor. Pasang pipa pembuangan air (subdrain) masuk ke dalam tebing agar air bisa keluar dan tanah kembali kaku, sehingga Faktor Keamanan tebing terjamin.</p></div>`,
+  quiz: createQuiz([
+    ["Dua parameter utama kuat geser tanah menurut kriteria keruntuhan Mohr-Coulomb adalah?", ["Batas Cair dan Batas Plastis","Kohesi (c) dan Sudut Geser Dalam (φ)","Angka Pori dan Berat Jenis","Permeabilitas dan Konsolidasi"], 1, "Kohesi adalah gaya ikat antar partikel halus, sudut geser dalam mewakili friksi gesekan antar butiran."],
+    ["Metode analisis stabilitas lereng yang paling konservatif dan mengabaikan keseimbangan gaya antar-irisan adalah?", ["Metode Bishop Disederhanakan","Metode Spencer","Metode Fellenius (Ordinary)","Metode Morgenstern-Price"], 2, "Metode Fellenius hanya menyeimbangkan momen tanpa mempertimbangkan gaya normal dan geser antar-slice."],
+    ["Modul aplikasi GeoStudio yang digunakan secara universal untuk komputasi Faktor Keamanan lereng adalah?", ["SEEP/W","SIGMA/W","SLOPE/W","QUAKE/W"], 2, "SLOPE/W mensimulasikan berbagai metode kesetimbangan batas untuk pencarian bidang gelincir kritis."],
+    ["Bentuk bidang gelincir keruntuhan pada lereng tanah lempung yang homogen umumnya berbentuk?", ["Translasi mendatar","Jatuhan bebas (Fall)","Busur Lingkaran (Circular)","Baji (Wedge)"], 2, "Distribusi tegangan geser di tanah lempung homogen akan membentuk kurva keruntuhan berupa busur rotasi."],
+    ["Pemasangan pipa PVC berlubang ke dalam tebing lereng untuk menurunkan tekanan air tanah secara pasif disebut?", ["Inclinometer","Soil Nailing","Subdrain (Horizontal Drain)","Ground Anchor"], 2, "Menurunkan muka air dengan subdrain menghilangkan gaya angkat hidrostatik dan menaikkan tegangan efektif geser tanah."],
+    ["Dalam analisis pseudo-statis untuk beban gempa bumi, percepatan gempa modelkan sebagai...", ["Gaya gravitasi vertikal ekstra","Koefisien seismik statis konstan (kh dan kv)","Getaran harmonik sinusoidal","Modulus geser dinamis"], 1, "Pendekatan pseudo-statis menyederhanakan sejarah percepatan gempa dinamis menjadi beban inersia statis (kh)."],
+    ["Untuk lereng galian pada formasi tanah lempung yang telah mengalami sejarah kelongsoran sebelumnya, parameter kuat geser yang representatif digunakan adalah...", ["Kuat geser puncak (Peak strength)","Kuat geser sisa (Residual strength)","Kuat geser tak terdrainase murni (Su)","Modulus Young"], 1, "Pada bidang gelincir yang sudah terbentuk, partikel lempung terorientasi sejajar sehingga kuat geser turun tajam ke nilai residualnya."],
+    ["Fenomena hilangnya stabilitas lereng hulu bendungan secara dramatis akibat penyurutan level air waduk dalam waktu singkat dinamakan...", ["Overtopping","Piping internal","Rapid Drawdown","Soil Liquefaction"], 2, "Air waduk surut cepat, namun tekanan pori dalam lereng lambat berdisipasi, menyisakan gaya dorong air internal yang tidak seimbang."],
+    ["Pemasangan perkuatan pasif berupa injeksi baja tulangan berulir lurus ke dalam lereng galian untuk memperkuat massa tanah berfungsi sebagai...", ["Geo-membrane","Soil Nailing","Pre-stressed Ground Anchor","Bored Pile"], 1, "Soil nailing mengikat massa tanah di zona aktif ke zona pasif, menahan deformasi cabut dengan lekatan grouting semen."],
+    ["Keruntuhan blok batuan masif yang meluncur di atas suatu bidang diskontinuitas lemah yang miring ke arah luar muka lereng disebut longsoran...", ["Rotasional / Circular","Jatuhan (Rock Fall)","Guling (Toppling)","Translasi / Planar"], 3, "Longsoran planar/translasi dikendalikan murni oleh satu bidang lemah (seperti perlapisan serpih) yang terekspos pada lereng."]
+  ])
+},
+{
+  id: 3, title: "Rekayasa & Keamanan Bendungan", subtitle: "Rembesan & Struktur Urugan", tag: "Dam Engineering",
+  content: `<div class="info-card academic-only"><h3>🌊 Zonasi Urugan & Analisis Rembesan</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Bendungan urugan tanah didesain dengan zonasi ketat: Core lempung (kedap air), Filter (mencegah erosi piping), dan Rockfill (stabilitas mekanis). Analisis rembesan memodelkan phreatic line agar tekanan air keluar aman di toe drain hilir tanpa merusak stabilitas.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Bendungan</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Di tengah bendungan ada 'jantung' dari tanah liat (Core). Tanah liat ini dipadatkan tebal agar air tidak bocor. Di samping tanah liat, WAJIB dipasang zona Pasir (Filter). Tujuannya menahan butiran lempung agar tidak ikut hanyut terbawa rembesan air ke arah luar bendungan (mencegah Erosi Buluh).</p></div>`,
+  quiz: createQuiz([
+    ["Keruntuhan bendungan di mana air merembes membawa partikel tanah halus secara perlahan membentuk terowongan bawah tanah disebut?", ["Overtopping","Liquefaction","Piping (Erosi Buluh)","Settlement"], 2, "Piping mengikis tanah inti dari arah hilir perlahan, membesar, dan berujung pada jebolnya bendungan bumi secara mendadak."],
+    ["Zona material di dalam tubuh bendungan yang bergradasi khusus untuk mengunci partikel halus agar tidak hanyut tersapu aliran rembesan adalah?", ["Zona Inti (Core)","Zona Filter (Transisi)","Rip-rap (Batu Pelindung)","Cofferdam"], 1, "Filter berfungsi meloloskan air rembesan dengan aman namun menghentikan migrasi/pelolosan butiran tanah inti."],
+    ["Aplikasi spesifik analisis elemen hingga untuk memodelkan debit dan pola aliran rembesan (flow net) air di dalam bendungan adalah?", ["AutoCAD","SketchUp","SEEP/W (GeoStudio)","SAP2000"], 2, "SEEP/W memecahkan persamaan aliran konstan (steady) dan transient untuk mengevaluasi tekanan air pori dan fluks keluar."],
+    ["Lapisan batu pelindung di lereng hulu (upstream) bendungan untuk menahan gerusan fluktuasi ombak waduk disebut?", ["Core rock","Rip-rap","Grout cap","Cut-off trench"], 1, "Rip-rap meredam energi kinetik aksi gelombang (wave run-up) agar lereng tanah tidak terkikis/erosi."],
+    ["Batas teratas zona rembesan air di dalam penampang melintang bendungan di mana tekanan air pori sama dengan tekanan atmosfer disebut?", ["Garis Ekipotensial","Garis Freatik (Phreatic Line)","Garis Aliran (Flow line)","Garis Konsolidasi"], 1, "Garis freatik wajib diarahkan turun ke zona filter/drainase sebelum menyentuh lereng hilir terluar untuk mencegah pelongsoran dangkal."],
+    ["Fenomena erosi buluh internal (piping) di tumit hilir fondasi terjadi secara spontan ketika gradien hidrolik aliran keluar air tanah melampaui...", ["Permeabilitas absolut batuan","Gradien hidrolik kritis (ic) / Exit Gradient","Angka pori maksimum","Tegangan in-situ vertikal"], 1, "Jika exit gradient terlalu tinggi, gaya angkat air ke atas (upward seepage) melampaui berat efektif partikel tanah, menyebabkan sand boiling."],
+    ["Instrumen geoteknik vital untuk memantau fluktuasi elevasi garis freatik dan tekanan air pori riil di dalam zona inti bendungan adalah...", ["Inclinometer","Strong Motion Accelerograph","Piezometer","V-Notch Weir"], 2, "Piezometer kawat getar (vibrating wire) ditanam di inti lempung untuk memvalidasi apakah tekanan air masih dalam batas asumsi desain analitik."],
+    ["Metode standar untuk menyumbat celah rekahan formasi batuan dasar (bedrock) di bawah inti lempung agar tidak bocor dilalui air adalah dengan injeksi...", ["Curtain Grouting (Injeksi Tirai Semen)","Soil Nailing baja","Pengecoran Bored Pile","Penanaman Sheet Pile plastik"], 0, "Curtain grouting memompa larutan semen bertekanan tinggi masuk ke rekahan batuan dalam untuk membentuk dinding kedap air bawah tanah."],
+    ["Tipe bangunan pelimpah tanpa pintu mekanis yang didesain melengkung anatomis untuk melewatkan banjir besar secara aman dan otomatis disebut...", ["Spillway Siphon","Ogee Spillway (Mercu Ogee)","Chute baffle","Bottom Outlet Gate"], 1, "Profil hidrodinamis Ogee meniru kurva jatuhan air alamiah untuk menghindari kavitasi vakum dan mengefisienkan debit luapan."],
+    ["Pengisian air waduk tahap awal setelah konstruksi selesai (impounding) diwajibkan dilakukan secara bertahap perlahan dengan tujuan mutlak...", ["Memantau perilaku instrumen geoteknik dan respon stabilitas bendungan secara aman dan terukur","Membersihkan sisa-sisa proyek sampah kayu","Memancing ikan air tawar","Menguji ketahanan turbin PLTA secara instan"], 0, "Pembebanan air bertahap memberikan waktu bagi engineer untuk membaca sensor piezometer/inclinometer agar tidak terjadi keruntuhan dadakan."]
+  ])
+},
+{
+  id: 4, title: "Teknik Fondasi", subtitle: "Daya Dukung Dangkal & Dalam", tag: "Foundation",
+  content: `<div class="info-card academic-only"><h3>🏗️ Distribusi Beban Struktur</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Fondasi mentransfer beban infrastruktur ke lapisan formasi geologi. Fondasi dangkal dihitung kapasitas dukungnya menggunakan prinsip Terzaghi. Fondasi dalam (Bored Pile/Pancang) diandalkan untuk menembus lempung lunak, meresistensi beban dengan perpaduan tahanan ujung (End Bearing) dan gesekan selimut (Skin Friction).</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Fondasi Gedung</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Kalau tanah keras ada di dekat permukaan (dangkal), kita pakai Tapak Beton. Tapi kalau tanah lumpur sangat dalam, kita harus 'memaku' bumi pakai Tiang Pancang sampai menyentuh cadas, agar gedung 10 lantai tidak amblas sepihak.</p></div>`,
+  quiz: createQuiz([
+    ["Persamaan klasik daya dukung ultimit fondasi dangkal Karl Terzaghi melibatkan kontribusi dari tiga elemen, yaitu?", ["Torsi, momen lentur, tegangan tarik","Kohesi tanah, beban surcharged/merata (q), dan berat volume tanah di bawah dasar fondasi","Angin, salju, dan beban hidrolik","Modulus elastisitas, regangan, dan angka Poisson"], 1, "Rumus qu = c.Nc + q.Nq + 0.5.γ.B.Nγ mengakumulasi kontribusi gaya penahan geser lokal massa tanah di bawah fondasi."],
+    ["Tipe pelat fondasi beton masif utuh menyeluruh di bawah footprint gedung yang menekan perbedaan penurunan (differential settlement) pada tanah lunak disebut?", ["Fondasi sumuran","Spread footing individu","Fondasi Rakit (Raft/Mat Foundation)","Tiang friksi (Friction pile)"], 2, "Fondasi rakit membagikan beban tegangan secara merata ke area yang sangat luas (q = P/A turun signifikan)."],
+    ["Kapasitas daya dukung struktural pada tiang pancang yang dipukul masuk ditopang oleh dua tahahan tanah, yakni?", ["Tahanan air and tekanan udara","Tahanan ujung (End bearing) dan Tahanan gesek selimut (Skin friction)","Tahanan korosi sulfat","Tahanan torsi lateral"], 1, "Tahanan ujung didapat bila tiang menumpu pada batu, sedangkan friksi didapat dari lekatan sepanjang selimut tiang terhadap lempung."],
+    ["Peralatan berat crane yang dilengkapi palu beban masif bertenaga hidrolik/diesel untuk memasang fondasi tiang pancang beton adalah?", ["Excavator","Bulldozer","Pile Hammer (Diesel / Hydraulic)","Rotary Drilling Rig"], 2, "Hammer memberikan energi tumbukan kinetik mematikan tanah hingga set / kalendering penembusan tiang memenuhi kriteria desain pakar."],
+    ["Proses penurunan tanah bertahap secara vertikal pada lapisan lempung tebal akibat air pori terperas perlahan dalam jangka waktu tahunan disebut?", ["Likuifaksi (Liquefaction)","Penurunan Seketika elastis","Konsolidasi (Consolidation)","Soil Swelling"], 2, "Permeabilitas lempung sangat kecil, sehingga air lambat keluar. Modulus kompresibilitas dianalisis untuk memprediksi kurva durasi waktu turun total."],
+    ["Berkebalikan dengan konsolidasi lempung, penurunan segera (immediate/elastic settlement) paling dominan dan langsung tuntas saat beban dibangun pada tanah jenis...", ["Lempung plastisitas tinggi","Pasir lepas / berbutir kasar","Gambut dalam","Lumpur organik"], 1, "Rongga pori tanah pasir sangat besar sehingga tegangan air pori berlebih lenyap nyaris seketika saat dibebani (tanpa delay waktu konsolidasi)."],
+    ["Tiang pancang atau bore pile yang kapasitas desainnya hampir 100% didapatkan dengan memancang ujung tiang tembus hingga ke lapisan batuan keras dinamakan...", ["Friction Pile (Tiang Gesek)","Tension Pile","End Bearing Pile (Tiang Tumpu Ujung)","Sheet Pile"], 2, "Jika selimut tiang diabaikan (karena lempung sekitarnya terlalu lunak), pondasi dipaksa bertumpu sepenuhnya bak pilar baja di atas alas batu keras."],
+    ["Untuk memverifikasi keutuhan struktural tiang beton dan daya dukung aktual tiang menggunakan gelombang kejut palu tanpa pembebanan statis yang mahal, insinyur melakukan uji...", ["CPT (Sondir)","PDA Test (Pile Driving Analyzer)","Uji Geser Baling (Vane Shear)","Boring Inti"], 1, "Uji dinamik PDA menggunakan akselerometer dan strain transducer pada kepala tiang, direkam saat palu dijatuhkan untuk validasi grafis CASE method."],
+    ["Dalam desain fondasi untuk mesin berat bervibrasi di pabrik (contoh: turbin/kompresor), parameter krusial yang mutlak dihindari agar fondasi tidak hancur bergetar hebat adalah...", ["Batas cair (Liquid limit) tanah","Resonansi (Frekuensi operasi mesin mendekati frekuensi alami sistem fondasi-tanah)","Permeabilitas vertikal","Penetrasi alat sondir"], 1, "Pemodelan elastodinamik tanah dan blok beton harus dikalibrasi agar rentang frekuensi operasional mesin menjauh dari frekuensi natural redaman fondasi."],
+    ["Gaya geser tarik ke bawah yang membebani tiang pondasi akibat lapisan tanah timbunan lunak di sekeliling selimut tiang tersebut mengalami penurunan/konsolidasi LEBIH BESAR daripada penurunan tiang itu sendiri dinamakan...", ["Active Earth Pressure","Uplift hidrostatik","Negative Skin Friction (Tahanan Geser Negatif)","Tahanan ujung pasif"], 2, "NSF menarik selimut tiang ke bawah bagai lintah raksasa, secara tragis menyedot habis kapasitas daya dukung positif tiang tersebut untuk menahan beban mati bangunan."]
+  ])
+},
+{
+  id: 5, title: "Penyelidikan Geoteknik", subtitle: "In-Situ Test & Instrumen", tag: "Investigation",
+  content: `<div class="info-card academic-only"><h3>📊 Validasi Stratigrafi Geologi</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Desain fondasi mewajibkan akurasi data lapangan. Uji CPT (Sondir) membaca perlawanan kerucut (qc) secara kontinu. Uji SPT mendapatkan sampel dan resistensi pukulan. Korelasi hasil uji In-situ ini dikombinasikan dengan pemetaan topografi untuk mendefinisikan parameter mekanis tanah di software numerik seperti Plaxis.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Uji Tanah</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Dokter butuh rontgen sebelum operasi, Insinyur butuh Sondir & Bor Inti sebelum bangun proyek. Jangan pernah skip budget tes tanah! Bangunan ratusan milyar bisa roboh hancur jika lapisan di bawah tanah ternyata hanya area rawa gambut yang disamarkan oleh muka tanah datar.</p></div>`,
+  quiz: createQuiz([
+    ["Pada pengujian penetrasi standar (SPT), jumlah pukulan N-SPT dihitung dari palu seberat 63.5 kg yang dijatuhkan dari ketinggian bebas...", ["50 cm","76 cm (30 inci)","100 cm","60 cm"], 1, "Standar ASTM D-1586 menggarisbawahi energi potensial jatuh bebas hammer 140 lb dari ketinggian 30 inch (76 cm) untuk homogenitas data korelasional."],
+    ["Instrumen kerucut baja yang didorong hidrolis ke dalam tanah (tanpa lubang bor) untuk mendapatkan grafik qc (perlawanan konus) secara instan dan kontinu lazim disebut uji...", ["Core Drilling Inti","CPT (Cone Penetration Test) / Sondir","Uji Beban Pelat (PLT)","Test Pit Galian"], 1, "Sondir CPT (baik mekanis biconus atau elektrik) menembus lapisan lempung lunak secara akurat mengidentifikasi kedalaman lensa tanah keras."],
+    ["Instrumentasi monitoring pemantau geser (deformasi horizontal) massa tanah atau lereng dalam pengeboran vertikal beralur khusus (casing) menggunakan torpedo digital dinamakan...", ["Piezometer Vibrating Wire","Extensometer","Inclinometer","Load Cell"], 2, "Inclinometer menangkap deviasi sumbu XY pipa, membaca mm pergerakan rayapan lereng (creep) yang tidak kasat mata secara di permukaan."],
+    ["Alat pemantauan (sensor instrument) yang sangat spesifik ditanam ke elevasi dasar urugan inti bendungan untuk membaca tekanan hidrolik fluktuasi air pori secara real-time adalah?", ["Seismograf","Piezometer","GPS Rover","Waterpass"], 1, "Bacaan Piezometer mengkalibrasi laju disipasi / penyusutan tegangan pori berlebih di tanah lempung yang padat dibebani."],
+    ["Fenomena mengerikan akibat guncangan gempa pada lapisan pasir lepas, jenuh air dangkal yang mengakibatkan partikel tanah melayang/cair bagai quicksand disebut...", ["Konsolidasi Differensial","Likuifaksi (Soil Liquefaction)","Longsoran Rotasional","Erosi Piping"], 1, "Tekanan air pori naik secepat kilat merespons rambatan gelombang geser seismik, mendegradasi tegangan efektif pasir menjadi NOL (cair)."],
+    ["Pada pengujian pemboran Standar Penetrasi (SPT), nilai N didefinisikan sebagai jumlah pukulan palu untuk memasukkan tabung sampel belah sejauh...", ["Seluruh kedalaman tabung 45 cm","15 cm pertama saja","30 cm terakhir","Kedalaman 1 meter bulat"], 2, "Penetrasi awal 15 cm diabaikan karena terganggu endapan lumpur (seating drive). Hanya pukulan penetrasi 30 cm selanjutnya yang dihitung sebagai nilai N."],
+    ["Metrik persentase kualitas massa batuan di mana total panjang potongan silinder inti batu padat yang lebih panjang dari 10 cm dibagi dengan kemajuan bor dikenal sebagai...", ["Rock Quality Designation (RQD)","Liquid Limit","Lugeon Test Value","Unconfined Compressive Strength (UCS)"], 0, "RQD memetakan kekar dan retakan. RQD > 90% mengindikasikan batu utuh (excellent), sedangkan RQD < 25% adalah batuan hancur (very poor)."],
+    ["Pengujian lapangan baling-baling geser (Vane Shear Test / VST) sangat akurat dirancang untuk menentukan kuat geser tak terdrainase (Su) in-situ pada kondisi tanah...", ["Pasir padat berbatu","Koral serpihan","Lempung laut lunak hingga sangat lunak (soft clay)","Gravel kerikil bergradasi baik"], 2, "Memasukkan baling baja ke lempung lunak lalu memutarnya dengan torsi memberikan pembacaan tahanan geser murni (Su) tanpa gangguan sampel."],
+    ["Kondisi spasial pemetaan 3 dimensi (Peta Topografi/DEM) mutlak diperlukan sebelum merancang struktur bendungan/lereng dengan tujuan esensial untuk...", ["Melihat rona gradasi warna tanaman","Menentukan beda elevasi elevasi, kemiringan kontur (slope), dan volume batas genangan secara presisi","Menghitung jumlah warga desa","Mendeteksi umur batuan secara karbon radiologi"], 1, "Desain geoteknik tanpa pemetaan kontur resolusi tinggi 1:1000 tidak akan mampu menghasilkan analisis geometrik atau hitungan tampungan yang valid."],
+    ["Untuk menentukan modulus deformasi massa batuan langsung dari dinding lubang bor yang sangat dalam (tanpa membawa sampel batu ke lab), insinyur menggunakan uji...", ["Sondir Elektrik","Piezocone CPTu","Dilatometer / Pressuremeter Test","Sand cone density"], 2, "Pressuremeter memompa membran radial menekan paksa dinding lubang bor formasi batuan keras, mencatat kurva defleksi in-situ sejati."]
+  ])
+},
+{
+  id: 6, title: "Geohidrologi", subtitle: "Air Tanah & Akuifer", tag: "Geohydrology",
+  content: `<div class="info-card academic-only"><h3>💧 Dinamika Aliran Air Tanah</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Geohidrologi mempelajari distribusi dan pergerakan air tanah dalam formasi geologi. Konsep kunci meliputi uji pemompaan (Pumping Test) untuk menentukan Transmisivitas (T) dan Storativitas (S), serta pemahaman tentang akuifer bebas (unconfined) dan tertekan (confined).</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Air Tanah</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Galian proyek sering tiba-tiba banjir dari bawah tanah. Itu karena kita memotong aliran 'sungai bawah tanah' (akuifer). Kita harus memompa air tersebut keluar (Dewatering) agar tanah galian tidak berubah jadi bubur lumpur saat alat berat masuk.</p></div>`,
+  quiz: createQuiz([
+    ["Lapisan batuan atau tanah yang dapat menyimpan dan mengalirkan air tanah dalam jumlah ekonomis disebut?", ["Akuitard","Akuiklud","Akuifer","Akufug"], 2, "Akuifer memiliki porositas dan permeabilitas yang cukup tinggi (contoh: batupasir, kerikil) untuk disadap sumur."],
+    ["Akuifer yang dibatasi oleh lapisan kedap air di bagian atas dan bawahnya disebut?", ["Akuifer Bebas (Unconfined)","Akuifer Tertekan (Confined)","Akuifer Menggantung (Perched)","Akuifer Karst"], 1, "Air di dalam akuifer tertekan berada di bawah tekanan hidrolik lebih besar dari atmosfer. Jika dibor, air bisa memancar naik (Sumur Artesis)."],
+    ["Uji lapangan dengan memompa air dari sumur dan mengamati penurunan muka air di sumur pantau sekitarnya untuk mengetahui parameter Transmisivitas (T) adalah?", ["Sondir Test","Pumping Test (Uji Pemompaan)","Lugeon Test","Boring Test"], 1, "Pumping test esensial untuk mendesain sistem dewatering galian dalam dan mengevaluasi cadangan air tanah."],
+    ["Garis khayal yang menghubungkan titik-titik elevasi muka air tanah hidrolik pada akuifer tertekan disebut?", ["Garis Freatik","Garis Piezometrik","Garis Ekuator","Garis Isohyet"], 1, "Garis piezometrik merepresentasikan 'head' atau energi total (elevasi + tekanan) dari air tanah tertekan tersebut."],
+    ["Penurunan muka air tanah di sekitar sumur pompa yang membentuk profil seperti corong terbalik disebut?", ["Cone of Depression (Kerucut Penurunan)","Liquefaction","Subsidence","Piping"], 0, "Semakin lama dipompa, radius kerucut (radius of influence) makin meluas dan dapat mengeringkan sumur tetangga."],
+    ["Parameter kelulusan air pada batuan keras (bedrock) pondasi bendungan diukur menggunakan uji injeksi bertekanan yang disebut?", ["Sondir Elektrik","Lugeon Test","Uji Permeabilitas Falling Head","Uji Konsolidasi"], 1, "Nilai 1 Lugeon setara dengan penyerapan 1 liter air per meter lubang bor per menit pada tekanan 10 bar."],
+    ["Hukum dasar aliran air tanah laminar di media berpori diformulasikan oleh ilmuwan bernama?", ["Terzaghi","Newton","Darcy","Reynold"], 2, "Hukum Darcy (Q = k.i.A) adalah fondasi mutlak pergerakan air bawah tanah."],
+    ["Rembesan air tanah yang muncul dan mengalir keluar di permukaan lereng galian sangat berbahaya karena memicu?", ["Gaya angkat (Uplift)","Gaya seret (Seepage force) yang menurunkan stabilitas lereng","Konsolidasi cepat","Likuifaksi seketika"], 1, "Gaya seret arah keluar (outward seepage) mendorong partikel tanah untuk lepas, memicu erosi buluh dan longsoran."],
+    ["Masuknya air laut ke dalam akuifer air tawar di daerah pesisir pantai akibat pemompaan air tanah yang berlebihan disebut?", ["Intrusi Air Laut","Abrasi Pantai","Tsunami","Likuifaksi"], 0, "Penurunan muka air tanah tawar menggeser *interface* keseimbangan Ghyben-Herzberg, menarik air asin masuk ke daratan."],
+    ["Lapisan tanah yang dapat menyimpan air tetapi mengalirkannya sangat lambat (contoh: lempung pasiran) disebut lapisan?", ["Akuifer","Akuiklud","Akuitard","Akufug"], 2, "Akuitard menghambat (retard) laju aliran air. Berbeda dengan Akuiklud (lempung murni) yang 100% kedap air."]
+  ])
+},
+{
+  id: 7, title: "Klimatologi", subtitle: "Siklus Iklim & Curah Hujan", tag: "Climatology",
+  content: `<div class="info-card academic-only"><h3>☁️ Analisis Iklim & Cuaca</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Klimatologi mengevaluasi parameter atmosfer pembentuk siklus hidrologi. Analisis curah hujan harian maksimum, evapotranspirasi (Penman-Monteith), serta fenomena iklim global (El Nino / La Nina) digunakan sebagai input krusial dalam mendesain kapasitas tampungan waduk dan pelimpah banjir.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Cuaca Proyek</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Tanpa data iklim, kita buta. Kita harus tahu siklus musim hujan ekstrem di lokasi proyek untuk merancang gorong-gorong (drainase) agar proyek tidak tenggelam. Kemarau panjang (El Nino) bagus untuk ngecor beton, tapi bikin waduk kering kerontang.</p></div>`,
+  quiz: createQuiz([
+    ["Fenomena memanasnya Suhu Muka Laut (SML) di Samudera Pasifik tengah yang memicu kemarau panjang di Indonesia adalah?", ["La Nina","El Nino","Muson Tropis","Global Warming"], 1, "El Nino menggeser awan konvektif pembawa hujan menjauh dari Nusantara menuju Pasifik timur."],
+    ["Alat stasiun cuaca untuk mengukur dan merekam intensitas curah hujan secara otomatis terhadap waktu adalah?", ["Termometer","Anemometer","Pluviograph / ARR (Automatic Rainfall Recorder)","Higrometer"], 2, "ARR mencatat durasi dan lebatnya hujan (mm/jam), sangat vital untuk membuat kurva IDF banjir."],
+    ["Kehilangan air kembali ke atmosfer akibat penguapan dari badan air waduk dan transpirasi dari daun tanaman secara gabungan disebut?", ["Presipitasi","Kondensasi","Evapotranspirasi","Infiltrasi"], 2, "Evapotranspirasi adalah 'pengeluaran/kebocoran' wajib dalam hitungan neraca keseimbangan air waduk harian."],
+    ["Angin muson yang membawa banyak uap air dari Samudera Hindia dan Asia menuju Australia, menyebabkan musim hujan di Indonesia adalah?", ["Muson Barat","Muson Timur","Angin Darat","Angin Siklon"], 0, "Muson Barat bertiup sekitar bulan Oktober-April melewati lautan luas sehingga sarat akan uap air jenuh."],
+    ["Garis pada peta klimatologi yang menghubungkan stasiun-stasiun dengan curah hujan yang sama disebut?", ["Isobar","Isotherm","Isohyet","Kontur"], 2, "Peta isohyet digunakan ahli hidrologi untuk menghitung volume hujan rata-rata pada Daerah Aliran Sungai (DAS) yang luas."],
+    ["Lapisan atmosfer terendah tempat terjadinya segala fenomena cuaca awan, hujan, dan badai adalah?", ["Stratosfer","Mesosfer","Termosfer","Troposfer"], 3, "Troposfer memiliki ketebalan sekitar 10-15 km dari permukaan laut, menampung 99% uap air atmosfer bumi."],
+    ["Efek bayangan hujan (rain shadow effect) yang menyebabkan daerah tersebut menjadi kering kerontang umumnya terjadi di daerah?", ["Puncak gunung es","Lereng pegunungan bagian bawah arah angin (Leeward)","Tengah laut lepas","Garis ekuator"], 1, "Awan telah memeras habis hujannya saat menanjak lereng hadap angin (Windward), sehingga udara yang turun ke Leeward menjadi kering panas."],
+    ["Data iklim berikut yang TIDAK digunakan dalam perhitungan rumus kompleks evapotranspirasi metode Penman-Monteith adalah?", ["Suhu udara dan Kelembaban relatif","Kecepatan angin","Suhu inti magma bumi","Radiasi matahari"], 2, "Penman-Monteith murni bergantung pada keseimbangan energi radiasi matahari dan faktor aerodinamis permukaan bumi."],
+    ["Pola curah hujan tipe ekuatorial (seperti di Sumatera dan Kalimantan) memiliki karakteristik unik berupa?", ["Satu puncak hujan ekstrim sebulan","Dua puncak hujan maksimum setahun (bimodal) saat matahari melintasi ekuator","Tidak ada hujan sama sekali","Hujan salju tahunan"], 1, "Pola bimodal terjadi sekitar bulan Maret dan Oktober saat posisi matahari berada tepat di atas garis khatulistiwa (Zenith)."],
+    ["Satuan standar metrik internasional untuk mengukur besaran intensitas presipitasi curah hujan adalah?", ["mm/jam (Milimeter per jam)","Pascal","Liter/detik","Kilogram/m2"], 0, "1 mm hujan berarti ada volume air setinggi 1 mm yang menggenang merata pada luasan area datar 1 meter persegi."]
+  ])
+},
+{
+  id: 8, title: "Hidrologi", subtitle: "Hujan, DAS, dan Debit", tag: "Hydrology",
+  content: `<div class="info-card academic-only"><h3>💧 Transformasi Hujan Menjadi Debit</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Hidrologi merekayasa prediksi banjir rencana (Return Period Q50, Q100, PMF) melalui analisis Daerah Aliran Sungai (DAS). Konsep seperti Waktu Konsentrasi (Tc), Koefisien Runoff (C), dan Hidrograf Satuan (Unit Hydrograph) dihitung untuk mendesain elevasi puncak bendungan dan kapasitas pintu pelimpah (Spillway).</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Menghitung Banjir</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Hujan di gunung akan mengalir semua jadi satu ke sungai di bawahnya (disebut wilayah DAS). Hutan lebat bisa menahan air (banjir kecil). Kalau hutan ditebang gundul, air hujan langsung meluncur jadi banjir bandang. Kita harus hitung rekor banjir terbesar 100 tahunan untuk mendesain Bendungan agar tidak jebol diluap air.</p></div>`,
+  quiz: createQuiz([
+    ["Batas punggung topografis bukit yang memisahkan aliran air hujan ke dalam dua sistem sungai yang berbeda secara geografis disebut?", ["Batas DAS (Catchment Divide)","Garis Freatik","Sempadan Sungai","Kontur Elevasi"], 0, "Catchment divide menentukan 'baskom' tangkapan air (Area DAS) yang akan dihitung volumenya menuju titik bendungan."],
+    ["Metode Poligon Thiessen pada ilmu hidrologi tata ruang digunakan secara khusus untuk?", ["Mengukur kecepatan arus sungai","Menghitung curah hujan rata-rata tertimbang (Areal rainfall) dari beberapa stasiun penakar di suatu DAS","Mendeteksi gempa","Mengetahui jenis tanah"], 1, "Setiap stasiun hujan diberi bobot luas (poligon) berdasarkan jarak geometri kedekatannya dengan wilayah DAS."],
+    ["Waktu yang dibutuhkan tetes air untuk mengalir dari titik terjauh di perbatasan DAS menuju titik kontrol (outlet bendungan) disebut?", ["Waktu Paruh","Waktu Konsentrasi (Time of Concentration)","Base time","Lag time"], 1, "Intensitas hujan desain biasanya dihitung pada durasi hujan yang sama dengan waktu konsentrasi DAS tersebut."],
+    ["Dalam persamaan rasional untuk debit banjir (Q = C.I.A), parameter nilai 'C' mewakili angka?", ["Kecepatan aliran m/s","Koefisien Pengaliran / Larian permukaan (Runoff Coefficient)","Konstanta gravitasi bumi","Jumlah curah hujan"], 1, "Nilai C (0.0 hingga 1.0) mempresentasikan persentase hujan yang tidak meresap ke tanah melainkan menjadi aliran banjir sungai."],
+    ["Grafik lengkung yang memvisualisasikan fluktuasi debit aliran sungai (m³/detik) terhadap berjalannya waktu (jam/hari) disebut?", ["Kurva S","Kurva IDF","Hidrograf (Hydrograph)","Topografi"], 2, "Bentuk hidrograf runcing menandakan DAS gundul (banjir bandang cepat), sedangkan hidrograf landai menandakan DAS berhutan lebat."],
+    ["Pernyataan Debit Banjir Rencana 'Q50' bermakna bahwa debit banjir tersebut memiliki periode ulang 50 tahunan, yang berarti probabilitas terjadinya dalam tahun ini adalah?", ["50%","10%","2% (1/50)","0.5%"], 2, "Bukan berarti terjadi tepat tiap 50 tahun, tapi ada probabilitas statis 2% untuk terjadi di *setiap* tahunnya."],
+    ["Aliran air di dasar sungai yang terus ada di puncak musim kemarau, bersumber dari pelepasan lambat cadangan air tanah alami disebut aliran?", ["Surface runoff","Baseflow (Aliran Dasar)","Interflow","Banjir lahar"], 1, "Hutan dan akuifer bertindak seperti spons, menyerap air saat hujan dan memerasnya perlahan (baseflow) menunjang kehidupan sungai di kemarau."],
+    ["Proses simulasi matematika untuk menghitung transformasi/peredaman hidrograf banjir saat melewati tampungan luas (seperti waduk) menuju hilir disebut?", ["Flood Routing (Penelusuran Banjir)","Water Hammer","Pumping test","Uji Lugeon"], 0, "Flood routing membuktikan bahwa waduk mampu 'memotong' debit puncak banjir (Peak Attenuation) sehingga sungai di hilir aman."],
+    ["Kurva yang menghubungkan data Intensitas hujan, Durasi waktu hujan, dan Frekuensi probabilitas kejadian sering disingkat menjadi kurva?", ["Kurva S","Kurva Massa","Kurva IDF (Intensity-Duration-Frequency)","Kurva Kalibrasi"], 2, "Kurva IDF sangat vital digunakan desainer tata air untuk menghitung curah hujan rencana jalan tol dan gorong-gorong kota."],
+    ["Curah hujan sisa (netto) yang 100% langsung terkonversi menjadi aliran permukaan (limpasan) setelah dikurangi kehilangan akibat resapan (infiltrasi) dan cekungan disebut?", ["Baseflow hujan","Hujan Efektif (Effective Rainfall)","Hujan Orografis","Hujan Konvektif"], 1, "Hujan efektif inilah yang menjadi input utama dalam pembuatan grafik Hidrograf Satuan (Unit Hydrograph) banjir DAS."]
+  ])
+},
+{
+  id: 9, title: "Hidrolika", subtitle: "Aliran Saluran Terbuka & Spillway", tag: "Hydraulics",
+  content: `<div class="info-card academic-only"><h3>🌊 Dinamika Aliran & Energi Air</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Hidrolika sipil fokus pada perilaku air di saluran terbuka (Open Channel). Rumus Manning digunakan menghitung debit sungai/kanal. Analisis profil energi tinggi loncatan air (Hydraulic Jump) dengan Angka Froude sangat esensial mendesain dimensi Kolam Olak (Stilling Basin) peredam energi di hilir bendungan.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Aliran Air</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Air yang terjun dari puncak bendungan itu seperti peluru raksasa. Kalau air itu dibiarkan menghantam tanah sungai, bendungan bisa jebol dari bawah! Makanya kita buat 'Kolam Olak' berbahan beton super tebal di bawah untuk membenturkan air dengan air (membuat buih putih) agar tenaganya habis (jinak) sebelum masuk ke sungai alam.</p></div>`,
+  quiz: createQuiz([
+    ["Aliran pada saluran beton/sungai di mana kedalaman, kecepatan, dan luas penampang airnya selalu tetap (tidak berubah) di sepanjang saluran disebut aliran?", ["Laminar murni","Turbulen ekstrem","Seragam (Uniform Flow)","Berubah tiba-tiba (Rapidly Varied)"], 2, "Uniform flow adalah kondisi ideal yang digunakan insinyur saat menghitung kapasitas debit maksimum kanal pakai rumus Manning."],
+    ["Angka Froude (Fr) digunakan untuk menentukan tipe energi aliran air. Jika Fr > 1, maka aliran air tersebut meluncur deras bersifat?", ["Subkritis (Tenang)","Kritis","Superkritis (Deras/Shooting)","Laminar"], 2, "Aliran superkritis terjadi di saluran luncur (chute) bendungan di mana kecepatan air mendominasi gaya gravitasi gelombang."],
+    ["Rumus empiris gesekan yang paling universal digunakan oleh insinyur sipil untuk menghitung kecepatan rata-rata air di saluran terbuka adalah?", ["Hukum Newton","Hukum Pascal","Rumus Manning (v = 1/n . R^(2/3) . S^(1/2))","Rumus Terzaghi"], 2, "Angka kekasaran Manning (n) membedakan gesekan saluran beton mulus (n=0.013) dengan sungai berbatu koral kasar (n=0.035)."],
+    ["Fenomena transisi mendadak dan bergolak dari aliran superkritis (deras) menjadi subkritis (tenang) yang ditandai dengan buih putih tinggi dan kehilangan energi kinetik besar disebut?", ["Piping erosi","Loncatan Air (Hydraulic Jump)","Water hammer","Kavitasi"], 1, "Hydraulic jump adalah senjata utama kita untuk 'membunuh' energi air terjun yang menghancurkan sebelum ia masuk ke sungai hilir normal."],
+    ["Struktur bangunan beton tebal di hilir pelimpah (spillway) bendungan yang memang sengaja dirancang untuk menjadi tempat terjadinya Loncatan Air (meredam energi) disebut?", ["Intake gate","Penstock pesat","Kolam Olak (Stilling Basin / Energy Dissipator)","Ogee Crest"], 2, "Stilling basin sering dilengkapi gigi/blok peredam (baffle blocks) agar loncatan air terjadi sempurna di dalam area lantai beton yang kuat."],
+    ["Persamaan Bernoulli dalam hidrolika pipa dan saluran sangat fundamental karena didasarkan pada hukum alam fisika mutlak yaitu...", ["Kekekalan Massa","Kekekalan Energi (Energi Total di tiap titik adalah sama)","Kekekalan Momentum","Hukum Termodinamika"], 1, "Energi air berpindah wujud dari energi elevasi (ketinggian) menjadi energi tekanan dan energi kecepatan kinetik (Velocity head)."],
+    ["Garis referensi imajiner yang menunjukkan tinggi total energi air (penjumlahan elevasi + tekanan + kecepatan) di sepanjang aliran saluran disebut?", ["Phreatic Line","Garis Kontur","Energy Grade Line (EGL)","Baseflow line"], 2, "EGL selalu menurun miring ke arah hilir saluran akibat adanya gesekan kehilangan energi (head loss/friction)."],
+    ["Kerusakan mengerikan (beton berlubang-lubang seperti dimakan rayap) pada struktur pelimpah bendungan berkecepatan > 20 m/s terjadi akibat fenomena?", ["Korosi asam","Kavitasi (Tekanan air turun drastis membentuk gelembung uap vakum yang meledak menghantam beton)","Erosi lumut","Rayap air"], 1, "Saat air meluncur terlalu cepat di tikungan cembung, tekanannya minus. Gelembung mikro meledak (implosi) dengan energi jutaan pascal merobek beton."],
+    ["Saluran terbuka dengan kemiringan tajam yang berfungsi meluncurkan air secara superkritis dari elevasi puncak waduk menuju kolam peredam olak di dasar sungai dinamakan?", ["Terowongan Tekan","Saluran Luncur (Chute Spillway)","Pintu Radial","Siphon"], 1, "Pada Chute, kecepatan air sangat tinggi sehingga diperlukan fitur 'aerator' (penyuntik udara) di lantainya untuk mencegah bahaya kavitasi beton."],
+    ["Profil bentuk pelimpah bendungan yang dirancang sangat seksi melengkung mengikuti lintasan tirai air jatuh alamiah agar aliran menempel sempurna tanpa ruang hampa disebut profil?", ["Baffle block","Broad-crested weir","Mercu Ogee","Sluice gate"], 2, "Ogee memastikan efisiensi pelepasan debit (Koefisien C) maksimum dan mencegah lonjakan getaran akibat separasi vakum aliran air."]
+  ])
+},
+{
+  id: 10, title: "Litologi & Geologi", subtitle: "Jenis Batuan & Kekar Struktur", tag: "Lithology",
+  content: `<div class="info-card academic-only"><h3>🪨 Formasi Batuan Bedrock Pondasi</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Keamanan pondasi bendungan bertumpu pada integritas litologi batuan dasar (Igneous, Sedimentary, Metamorphic). Pemetaan struktur sesar (Fault), pengukuran orientasi rekahan Strike & Dip, dan penentuan klasifikasi massa batuan (RMR / Rock Mass Rating) mutlak dilakukan untuk desain perkuatan Grouting semen.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Membaca Batu</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Membangun di atas batu utuh sangat kuat, tapi awas batu yang sudah lapuk atau hancur karena retak (Kekar/Sesar). Arah retakan batu itu bagaikan 'perosotan' alami. Kalau arah perosotannya miring ke arah tebing galian proyek kita, tebing batu raksasa itu bisa longsor jatuh menimpa alat berat seketika.</p></div>`,
+  quiz: createQuiz([
+    ["Batuan yang terbentuk langsung dari proses pendinginan dan pembekuan lelehan magma pijar (baik di dalam maupun di permukaan bumi) disebut?", ["Batuan Beku (Igneous Rock)","Batuan Sedimen (Endapan)","Batuan Metamorf (Malihan)","Batuan Fosil"], 0, "Contoh utamanya adalah Granit (beku dalam/intrutif) dan Andesit/Basalt (beku luar/ekstrusif). Umumnya keras dan kuat untuk pondasi bendungan."],
+    ["Proses perusakan fisik (mekanis) dan alterasi kimiawi batuan keras di permukaan bumi akibat paparan air hujan, panas suhu, dan oksigen cuaca disebut?", ["Likuifaksi","Pelapukan (Weathering)","Sementasi","Konsolidasi"], 1, "Pelapukan mengubah batu andesit padat perlahan-lahan menjadi lempung lunak. Batu lapuk (Weathered rock) wajib digali buang dari tapak as bendungan."],
+    ["Arah garis potong (kompas) antara bidang kemiringan perlapisan batuan atau rekahan dengan bidang horizontal datar dinamakan?", ["Dip (Kemiringan)","Jurus (Strike)","Sesar (Fault)","Porositas"], 1, "Ahli geologi mengukur Strike and Dip rekahan batu pakai kompas Brunton untuk memetakan arah potensi pergeseran blok longsoran."],
+    ["Besaran sudut kemiringan vertikal maksimum dari suatu bidang lapisan/retakan batuan (diukur tegak lurus langsung terhadap arah Strike) dinamakan?", ["Dip (Kemiringan)","Jurus (Strike)","Joint (Kekar)","Cleavage"], 0, "Dip menentukan curamnya 'perosotan' bidang lemah batu. Jika Dip searah dengan kemiringan tebing (daylighting), bahaya longsor sangat tinggi."],
+    ["Sistem klasifikasi empiris teknik kualitas massa batuan yang sangat populer untuk desain terowongan/galian, menggunakan gabungan nilai parameter kuat tekan (UCS), RQD, spasi kekar, dan air tanah adalah?", ["Sistem Klasifikasi USCS","Rock Mass Rating (Sistem RMR - Bieniawski)","Hukum Darcy","Batas Atterberg"], 1, "Nilai RMR (0 hingga 100) menentukan rekomendasi perkuatan terowongan: apakah cukup pakai *rockbolt* atau butuh beton *shotcrete* tebal dan baja penyangga."],
+    ["Batuan sedimen klastik butir sangat halus yang terbentuk dari endapan lempung/lumpur zaman purba dan memiliki sifat belahan menyerpih tipis-tipis (fissility) mudah rapuh jika basah adalah?", ["Batu Pasir (Sandstone)","Serpih (Shale / Claystone)","Konglomerat","Granit"], 1, "Shale/Serpih adalah musuh geoteknik. Saat kering ia sekeras batu, tapi saat diekspos air dan udara galian, ia langsung hancur kembali menjadi lempung lumpur lembek."],
+    ["Batu Marmer (Marble) yang indah dan kuat merupakan contoh batuan metamorf (malihan) yang terbentuk dari proses pemanasan/tekanan ekstrim atas batuan asal (protolith) berupa?", ["Batu Lempung","Batu Gamping / Kapur (Limestone)","Gambut (Peat)","Batu Apung"], 1, "Kalsium karbonat pada batu gamping mengkristal ulang akibat tekanan tektonik lempeng bumi menjadi struktur marmer masif yang mengkilap."],
+    ["Patahan kerak bumi di mana blok batuan atas (hanging wall) bergerak merosot turun relatif terhadap blok bawah (footwall) akibat gaya tarikan tektonik saling menjauh (tensional) disebut?", ["Sesar Naik (Thrust Fault)","Sesar Normal (Normal Fault)","Sesar Geser Mendatar (Strike-slip Fault)","Kekar Tarik"], 1, "Sesar menghasilkan zona batu hancur (Breksi Sesar / Gouge lempung) yang merupakan jalur utama kebocoran air bendungan di bawah tanah."],
+    ["Indikator RQD (Rock Quality Designation) mengukur kualitas inti batu hasil bor. Ia dihitung dari persentase inti batu utuh padat yang panjangnya LEBIH DARI... dibagi total kemajuan bor.", ["1 centimeter","10 centimeter","100 centimeter","5 meter"], 1, "RQD > 90% mengindikasikan batu sangat masif utuh tanpa retak (Excellent). RQD < 25% batuan hancur berkeping-keping (Very Poor)."],
+    ["Batuan beku luar vulkanik (ekstrusif) yang berwarna sangat gelap, berbutir halus leburan cepat, dan merupakan material penyusun utama dasar laut kerak samudera bumi adalah?", ["Batu Apung (Pumice)","Granit","Basalt (Batu Candi)","Marmer"], 2, "Basalt yang pecah secara kekar tiang (columnar joint) sangat sering dijadikan bahan baku batu pecah (aggregate) kualitas tinggi untuk campuran beton struktur."]
+  ])
+},
+{
+  id: 11, title: "Geografi & Spasial", subtitle: "Sistem GIS & Pemetaan Topografi", tag: "Geography",
+  content: `<div class="info-card academic-only"><h3>🗺️ Analisis Data Spasial Dasar</h3><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Geografi teknik mengaplikasikan Sistem Informasi Geografis (GIS), DEM (Digital Elevation Model), dan Penginderaan Jauh (Remote Sensing). Interpolasi garis kontur topografi sangat fundamental untuk menghitung luas genangan Catchment Area (DAS) waduk, arah aliran run-off, dan volume galian timbunan cut-and-fill proyek.</p></div>
+  <div class="simple-card simple-only" style="display:none;"><h4>👷 Bahasa Lapangan: Peta Proyek</h4><p class="text-sm md:text-base mt-2 text-[var(--text-muted)] leading-relaxed">Peta Topografi adalah mata dewa Insinyur. Dari garis-garis kontur rapet/renggang di kertas, kita tahu persis di mana ada jurang, lembah curam, atau bukit bukit datar tanpa harus ke lokasi. Lewat software GIS kita bisa menghitung volume bukit yang mau dipotong (Cut) untuk dipindah nguruk tebing (Fill).</p></div>`,
+  quiz: createQuiz([
+    ["Sistem informasi berbasis komputer terpadu yang khusus dirancang untuk menangkap, menyimpan, memanipulasi, dan menganalisis data spasial (bereferensi keruangan bumi) secara visual pintar adalah?", ["Microsoft Word","GIS (Geographic Information System / SIG)","Winamp Audio","Adobe Photoshop"], 1, "GIS (seperti ArcGIS / QGIS) bisa menumpangtindihkan (overlay) peta jenis tanah, peta hujan, dan rupa bumi 3D untuk mencari lokasi bendungan terbaik."],
+    ["Garis imajiner berkelok-kelok pada lembar peta topografi yang menghubungkan seluruh titik-titik di lapangan yang memiliki nilai ketinggian/elevasi (Z) yang sama persis disebut?", ["Garis Khatulistiwa","Garis Kontur","Garis Lintang (Latitude)","Garis Freatik"], 1, "Semakin rapat dan berdekatan jarak antar garis kontur di peta, berarti tebing/lereng tanah di dunia nyata tersebut semakin curam/terjal."],
+    ["Sistem koordinat global bola bumi standar yang menentukan lokasi absolut dengan memotong derajat lintasan Garis Lintang (Latitude) dan Garis Bujur (Longitude) adalah sistem koordinat?", ["Geografis (Geographic Coordinate System)","Lokal Proyek XY","Cartesian 2D","AutoCAD Axis"], 0, "Bujur 0 derajat berada di Greenwich Inggris. Indonesia memanjang di ekuator sekitar 95 BT hingga 141 BT."],
+    ["Teknologi canggih untuk mengakuisisi citra data/informasi permukaan bumi jarak jauh (dari satelit, radar satelit SAR, atau drone Lidar/Photogrametry) tanpa harus menyentuh tanah fisik objeknya disebut?", ["Geolistrik","Penginderaan Jauh (Remote Sensing)","Sondir CPT","Ekskavator"], 1, "Data citra ini kemudian diolah menghasilkan model elevasi digital (DEM) beresolusi super tajam untuk dasar desain geoteknik awal bendungan."],
+    ["Pada interpretasi visual pembacaan peta topografi (kontur), lekukan garis kontur yang bentuknya menyerupai huruf 'V' atau 'U' terbalik dengan ujung meruncing menunjuk ke arah elevasi/angka yang lebih TINGGI menandakan sebuah bentang alam berupa?", ["Puncak bukit bulat","Lereng datar","Lembah / Alur Sungai (Valley)","Gua batu"], 2, "Air secara alami akan mengalir turun berkumpul menuju ujung cekungan 'V' kontur tersebut. Inilah lokasi ideal memposisikan as tapak Bendungan Urugan."],
+    ["Beda jarak vertikal ketinggian (angka meter) yang teratur dan pasti antara satu garis kontur indeks dengan garis kontur tepat di sebelahnya pada peta disebut?", ["Sudut Kemiringan (Slope)","Interval Kontur (Contour Interval)","Skala Peta (Scale)","Azimuth"], 1, "Peta detail teknik 1:1000 umumnya memakai interval kontur 1 meter (atau setengah meter) agar elevasi lekukan tanah dapat dipetakan mendetail."],
+    ["Format penyimpanan data GIS yang merepresentasikan fitur permukaan bumi secara terus menerus dalam bentuk kumpulan grid matriks kotak-kotak piksel (contoh: Citra Satelit, Peta DEM/DTM lereng) dinamakan model data?", ["Vektor (Vector)","Text murni ASCII","Raster (Raster Model)","Audio Wave"], 2, "Setiap kotak piksel raster menyimpan satu nilai tunggal spesifik (misalnya nilai elevasi tinggi 254 mdpl atau warna indeks hijau hutan)."],
+    ["Sistem Proyeksi Peta silindris universal yang paling sering dipakai Insinyur Sipil (membentangkan bumi bulat menjadi peta datar) dengan membagi bumi menjadi 60 zona bujur dan menggunakan hitungan jarak meter (X,Y) bukan derajat adalah?", ["Proyeksi Azimuthal Kutub","UTM (Universal Transverse Mercator)","Proyeksi Conic Kerucut","Peta Mercator Pelaut"], 1, "Sistem UTM mengeliminasi distorsi lengkung bumi, sehingga hitungan ukur jarak jalan, luas DAS, dan area hektar proyek menjadi sangat teliti akurat (dalam Meter)."],
+    ["Variabel output turunan utama (dari peta DEM raster) pada software GIS yang menghitung persentase atau derajat sudut kecuraman turun-naiknya sebuah lahan tanah lereng proyek diekspresikan sebagai menu fungsi?", ["Hillshade bayangan","Aspect arah","Slope (Kemiringan Lereng)","Flow Accumulation"], 2, "Peta Slope (diwarnai merah/hijau) digunakan secara mutlak untuk identifikasi awal tata ruang bahaya potensi kerawanan longsor lahan geoteknik tingkat regional makro."],
+    ["Format struktur model data digital GIS yang merepresentasikan wujud asli bumi tajam presisi matematika dengan menggunakan entitas batas Titik (Point), Garis rute (Polyline), dan Luasan poligon tertutup (Polygon) disebut model data?", ["Model Data Vektor (Vector)","Model Image Raster RGB","Video Animasi .mp4","Tabel Excel murni"], 0, "Tiang pancang digambar sebagai Point, Aliran as sungai sebagai Polyline, dan Area batas luasan genangan waduk dibatasi garis tertutup Polygon."]
+  ])
+}
+];
+
+// ===================== APP LOGIC =====================
+let currentView = 'dashboard'; 
+let currentSlide = 0;
+let simpleMode = false;
+let visited = new Set();
+let answered = {};
+let bookmarks = new Set();
+let radarChartInstance = null;
+let flashcardsAll = [];
+let flashCurrent = 0;
+let examQuestions = [];
+let examAnswers = {};
+let examCurrent = 0;
+let examTimer = null;
+let examTimeLeft = 40*60;
+
+// Default Data Motto Custom
+let defaultMottos = [
+    "\"Keamanan bendungan adalah prioritas mutlak yang tak bisa ditawar.\"",
+    "\"Desain Geoteknik adalah seni memahami perilaku bumi yang tersembunyi.\"",
+    "\"Analisis terstruktur menghasilkan fondasi infrastruktur yang kokoh.\"",
+    "\"Mengubah kerumitan logika mekanika menjadi parameter yang presisi.\"",
+    "\"Inovasi lahir dari observasi lapangan dan validasi numerik.\""
+];
+let userMottos = JSON.parse(localStorage.getItem('userMottos')) || [];
+let allMottos = [...defaultMottos, ...userMottos];
+let currentMottoIdx = 0;
+
+// Sesi Waktu Counter
+let sessionTimeSeconds = 0;
+setInterval(() => {
+    sessionTimeSeconds++;
+    const el = document.getElementById('dash-metric-time');
+    if(el) {
+        const m = Math.floor(sessionTimeSeconds / 60);
+        const s = sessionTimeSeconds % 60;
+        el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+}, 1000);
+
+// ===================== WAKTU & TANGGAL =====================
+function runTimeSynchronization() {
+    const dayArr = ["MINGGU", "SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+    const monthArr = ["JAN", "FEB", "MAR", "APR", "MEI", "JUN", "JUL", "AGU", "SEP", "OKT", "NOV", "DES"];
+    
+    setInterval(() => {
+        const now = new Date();
+        const dayStr = `${dayArr[now.getDay()]}, ${now.getDate()} ${monthArr[now.getMonth()]} ${now.getFullYear()}`;
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        const timeStr = `${h}:${m}:${s}`;
+        
+        document.querySelectorAll('.hari-realtime').forEach(el => el.textContent = dayStr);
+        document.querySelectorAll('.jam-realtime').forEach(el => el.textContent = timeStr);
+    }, 1000);
+}
+
+// Initialize
+window.onload = () => {
+    loadProgress(); 
+    buildFlashcardsAll();
+    setupHolographicTooltips();
+    setupKeyboardNavigation(); // Inisialisasi navigasi keyboard global
+    
+    setTimeout(() => {
+        const spl = document.getElementById('splash');
+        if(spl) {
+            spl.style.opacity = '0';
+            setTimeout(() => { 
+                spl.style.display = 'none'; 
+                const app = document.getElementById('app');
+                if(app) {
+                    app.classList.add('visible'); 
+                    window.dispatchEvent(new Event('resize'));
+                }
+            }, 600);
+        }
+    }, 2000);
+
+    try { runTimeSynchronization(); } catch(e) { console.error(e); }
+    try { setupScreensaverListeners(); } catch(e) { console.error(e); }
+    try { renderNav(); } catch(e) { console.error(e); }
+    try { renderSlides(); } catch(e) { console.error(e); }
+    try { updateUI(); } catch(e) { console.error(e); }
+    try { showDashboard(); } catch(e) { console.error(e); }
+    try { initMottoRotator(); } catch(e) { console.error(e); }
+};
+
+// ===================== KEYBOARD NAVIGATION =====================
+function setupKeyboardNavigation() {
+    document.addEventListener('keydown', (e) => {
+        // Jangan aktifkan shortcut jika sedang mengetik di input box
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+        const isFlashcardActive = document.getElementById('flash-screen').classList.contains('active');
+        const isExamActive = document.getElementById('exam-screen').classList.contains('active');
+        const isSlideActive = currentView === 'slide';
+
+        if (e.key === 'ArrowRight') {
+            if (isFlashcardActive) nextFlashcard();
+            else if (isExamActive) nextExamQ();
+            else if (isSlideActive) nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+            if (isFlashcardActive) prevFlashcard();
+            else if (isExamActive) prevExamQ();
+            else if (isSlideActive) prevSlide();
+        } else if ((e.key === ' ' || e.key === 'Enter') && isFlashcardActive) {
+            e.preventDefault(); // Hindari halaman scroll ke bawah jika spasi ditekan
+            flipFlashcard();
+        }
+    });
+}
+
+// ===================== HOLO TOOLTIP =====================
+function setupHolographicTooltips() {
+    const tipBox = document.getElementById("holoTooltipBox");
+    let tooltipTimeout;
+
+    const hideTooltip = () => {
+        tipBox.style.opacity = "0";
+        setTimeout(() => { tipBox.style.display = "none"; }, 300);
+    };
+
+    document.body.addEventListener("mouseover", (e) => {
+        const trigger = e.target.closest(".custom-holo-trigger");
+        if(trigger) {
+            tipBox.innerHTML = `<i class="fa-solid fa-circle-info text-cyan-400 animate-pulse mr-2"></i> ${trigger.getAttribute("data-holo")}`;
+            tipBox.style.display = "block";
+            
+            requestAnimationFrame(() => { tipBox.style.opacity = "1"; });
+            
+            clearTimeout(tooltipTimeout);
+            tooltipTimeout = setTimeout(hideTooltip, 3000);
+        }
+    });
+
+    document.body.addEventListener("mousemove", (e) => {
+        if(tipBox.style.display === "block") {
+            let posX = e.clientX + 15; 
+            let posY = e.clientY + 15;
+            const tipRect = tipBox.getBoundingClientRect();
+            if (posX + tipRect.width > window.innerWidth) posX = e.clientX - tipRect.width - 15;
+            if (posY + tipRect.height > window.innerHeight) posY = e.clientY - tipRect.height - 15;
+            tipBox.style.left = Math.max(5, posX) + "px"; 
+            tipBox.style.top = Math.max(5, posY) + "px";
+            
+            clearTimeout(tooltipTimeout);
+            tooltipTimeout = setTimeout(hideTooltip, 3000);
+        }
+    });
+
+    document.body.addEventListener("mouseout", (e) => {
+        const trigger = e.target.closest(".custom-holo-trigger");
+        if(trigger) {
+            clearTimeout(tooltipTimeout);
+            hideTooltip();
+        }
+    });
+}
+
+// ===================== SAVE & RESET PROGRESS =====================
+function saveProgress() {
+    const data = {
+        visited: Array.from(visited),
+        answered: answered,
+        bookmarks: Array.from(bookmarks)
+    };
+    localStorage.setItem('geoAtlasProgressV6', JSON.stringify(data));
+    alert('✅ Progres evaluasi dan kuis Anda berhasil disimpan.');
+}
+
+function loadProgress() {
+    const data = localStorage.getItem('geoAtlasProgressV6');
+    if(data) {
+        const parsed = JSON.parse(data);
+        visited = new Set(parsed.visited || []);
+        answered = parsed.answered || {};
+        bookmarks = new Set(parsed.bookmarks || []);
+    }
+}
+
+function resetProgress() {
+    if(confirm("Apakah Anda yakin ingin mereset seluruh progres dan mengulang dari nol?")) {
+        localStorage.removeItem('geoAtlasProgressV6');
+        visited.clear();
+        answered = {};
+        bookmarks.clear();
+        renderSlides();
+        updateUI();
+        if(currentView === 'slide') goToSlide(currentSlide);
+        alert('🔄 Progres telah di-reset.');
+    }
+}
+
+// ===================== NAVIGASI & UI =====================
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function toggleSimpleMode() {
+    simpleMode = !simpleMode;
+    document.body.classList.toggle('simple-mode', simpleMode);
+    
+    const btn = document.getElementById('simple-toggle');
+    if(btn) btn.classList.toggle('active', simpleMode);
+    
+    const label = document.getElementById('simple-label');
+    if(label) label.textContent = simpleMode ? 'Lapangan' : 'Akademik';
+}
+
+function toggleZoom() {
+    const content = document.getElementById('content');
+    if(!content.style.zoom || content.style.zoom === "1") content.style.zoom = "1.15";
+    else if(content.style.zoom === "1.15") content.style.zoom = "1.3";
+    else content.style.zoom = "1";
+}
+
+function toggleBookmark() {
+    const id = slidesData[currentSlide].id;
+    bookmarks.has(id) ? bookmarks.delete(id) : bookmarks.add(id);
+    updateUI();
+}
+
+function toggleThemeMode() {
+    const body = document.getElementById("appBody");
+    const icon = document.getElementById("themeIcon");
+    const isDark = body.classList.contains("theme-dark");
+    
+    if(isDark) {
+        body.classList.remove("theme-dark"); 
+        body.classList.add("theme-light");
+        icon.className = "fa-solid fa-moon text-[var(--accent-amber)]"; 
+    } else {
+        body.classList.remove("theme-light"); 
+        body.classList.add("theme-dark");
+        icon.className = "fa-solid fa-sun text-[var(--accent-amber)]"; 
+    }
+    if(currentView === 'dashboard') renderRadarChart();
+}
+
+function doSearch(q) {
+    const res = document.getElementById('search-results');
+    if(!q) { res.classList.add('hidden'); return; }
+    const hits = slidesData.map((s,i) => ({i, s})).filter(x => (x.s.title+' '+x.s.tag+' '+x.s.content).toLowerCase().includes(q.toLowerCase()));
+    if(hits.length) {
+        res.innerHTML = hits.map(h => `<div class="p-3 border-b border-[var(--border-color)] hover:bg-[var(--border-color)] cursor-pointer text-xs transition-colors custom-holo-trigger" data-holo="Klik untuk membuka materi ini" onclick="goToSlide(${h.i});document.getElementById('search-results').classList.add('hidden');document.getElementById('search-input').value=''"><span class="text-[var(--accent-amber)] font-bold tracking-widest uppercase mr-1">MODUL ${h.i+1}</span><br> ${h.s.title}</div>`).join('');
+        res.classList.remove('hidden');
+    } else { res.classList.add('hidden'); }
+}
+
+function showDashboard() {
+    document.getElementById('dashboard-view').classList.remove('hidden');
+    document.getElementById('slide-container').classList.add('hidden');
+    document.getElementById('bottom-nav').classList.add('hidden'); 
+    
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    const navDash = document.getElementById('nav-dashboard');
+    if(navDash) navDash.classList.add('active');
+    
+    currentView = 'dashboard';
+    
+    setTimeout(() => {
+        renderRadarChart();
+        window.dispatchEvent(new Event('resize'));
+    }, 50);
+    
+    if(window.innerWidth < 1024) document.getElementById('sidebar').classList.add('collapsed');
+}
+
+function renderNav() {
+    const nav = document.getElementById('nav-scroll');
+    if(!nav) return;
+    
+    let html = `<div id="nav-dashboard" class="nav-item ${currentView === 'dashboard' ? 'active' : ''} custom-holo-trigger" data-holo="Lihat statistik rekapitulasi nilai dan informasi programmer" onclick="showDashboard()">
+        <div class="w-8 h-8 rounded flex items-center justify-center ${currentView === 'dashboard' ? 'bg-[var(--accent-amber)] text-white' : 'bg-[var(--border-color)]'} shrink-0 text-sm"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="flex-1 font-bold text-sm">Dasbor Utama</div>
+    </div><hr class="border-[var(--border-color)] my-3">`;
+    
+    html += slidesData.map((s,i) => {
+        const isActive = (currentView === 'slide' && i === currentSlide);
+        const isVisited = visited.has(s.id);
+        const isBm = bookmarks.has(s.id);
+        return `<div id="nav-slide-${i}" class="nav-item ${isActive?'active':''} ${isVisited?'visited':''} custom-holo-trigger" data-holo="Materi Geoteknik Modul ${i+1}: ${s.title}" onclick="goToSlide(${i})">
+            <div class="w-8 h-8 rounded flex items-center justify-center ${isActive?'bg-[var(--accent-amber)] text-white':'bg-[var(--border-color)]'} shrink-0 text-sm font-bold">${i+1}</div>
+            <div class="flex-1 truncate text-sm">${s.title}</div>
+            ${isBm?'<div class="text-[var(--accent-amber)] text-sm shrink-0"><i class="fa-solid fa-bookmark"></i></div>':''}
+            ${isVisited?'<div class="text-[var(--accent-emerald)] text-sm shrink-0 ml-2"><i class="fa-solid fa-check"></i></div>':''}
+        </div>`;
+    }).join('');
+    nav.innerHTML = html;
+}
+
+function renderSlides() {
+    const sc = document.getElementById('slide-container');
+    if(!sc) return;
+    sc.innerHTML = slidesData.map((s,i) => {
+        const quizHtml = s.quiz.map((q, qi) => {
+            const isAnswered = answered[s.id] && answered[s.id][qi] !== undefined;
+            const opts = q.options.map((opt, oi) => {
+                let cls = '';
+                if(isAnswered) {
+                    if(oi === q.correct) cls = 'correct disabled';
+                    else if(answered[s.id][qi] === oi) cls = 'wrong disabled';
+                    else cls = 'disabled';
+                }
+                return `<div class="quiz-opt ${cls} mono-font text-sm md:text-base" onclick="answerQuiz(${s.id}, ${qi}, ${oi}, this)">
+                    <span class="w-8 h-8 md:w-10 md:h-10 rounded flex items-center justify-center text-xs md:text-sm font-bold shrink-0 border-2 border-[var(--border-color)] bg-[var(--bg-card)] inline-flex mr-3 md:mr-4 shadow-inner">${String.fromCharCode(65+oi)}</span> ${opt}
+                </div>`;
+            }).join('');
+            return `<div class="quiz-box shadow-md"><div class="font-bold text-base md:text-lg mb-4 font-sans leading-relaxed text-[var(--text-main)]">${qi+1}. ${q.q}</div>${opts}<div class="quiz-explanation mono-font ${isAnswered?'show':''}"><strong><i class="fa-solid fa-microchip text-[var(--accent-amber)] mr-2"></i> Analisis Pakar:</strong> ${q.exp}</div></div>`;
+        }).join('');
+
+        return `<div class="slide" id="slide-${i}">
+            <div class="mb-4 md:mb-6 flex flex-col justify-between items-start border-b-2 border-[var(--border-color)] pb-4">
+                <span class="text-[10px] md:text-xs font-bold bg-[var(--accent-amber)]/20 text-[var(--accent-amber)] border border-[var(--accent-amber)]/50 px-2 md:px-3 py-1 rounded mono-font uppercase tracking-wider mb-2">${s.tag}</span>
+                <h1 class="text-xl md:text-4xl font-black font-tech text-[var(--medical-cyan)] uppercase tracking-wide drop-shadow-sm leading-tight">${s.title}</h1>
+                <p class="text-[var(--text-muted)] text-xs md:text-sm mono-font uppercase tracking-widest font-bold mt-1 md:mt-2">${s.subtitle}</p>
+            </div>
+            ${s.content}
+            <div class="mt-8 pt-4 md:pt-6"><h3 class="text-lg md:text-2xl font-black text-[var(--accent-amber)] mb-4 md:mb-6 uppercase flex items-center gap-2 md:gap-3 tracking-widest font-tech"><i class="fa-solid fa-list-check"></i> Evaluasi (10 Soal)</h3>${quizHtml}</div>
+        </div>`;
+    }).join('');
+}
+
+function goToSlide(idx) {
+    document.getElementById('dashboard-view').classList.add('hidden');
+    document.getElementById('slide-container').classList.remove('hidden');
+    document.getElementById('bottom-nav').classList.remove('hidden'); 
+    document.getElementById('bottom-nav').style.display = 'flex'; 
+    
+    document.querySelectorAll('.slide').forEach((el,i) => {
+        el.style.display = i === idx ? 'block' : 'none';
+    });
+    
+    currentView = 'slide';
+    currentSlide = idx;
+    visited.add(slidesData[idx].id);
+    updateUI();
+    const c = document.getElementById('content');
+    if(c) c.scrollTop = 0;
+    if(window.innerWidth < 1024) document.getElementById('sidebar').classList.add('collapsed');
+}
+
+function nextSlide() { 
+    if(currentSlide < slidesData.length-1) goToSlide(currentSlide+1); 
+    else showDashboard();
+}
+function prevSlide() { 
+    if(currentSlide > 0) goToSlide(currentSlide-1); 
+    else showDashboard();
+}
+
+function answerQuiz(slideId, qIdx, optIdx, el) {
+    if(!answered[slideId]) answered[slideId] = {};
+    if(answered[slideId][qIdx] !== undefined) return;
+    answered[slideId][qIdx] = optIdx;
+    
+    const slide = slidesData.find(s=>s.id===slideId);
+    const box = el.closest('.quiz-box');
+    box.querySelectorAll('.quiz-opt').forEach((opt, oi) => {
+        opt.classList.add('disabled');
+        if(oi === slide.quiz[qIdx].correct) opt.classList.add('correct');
+        else if(oi === optIdx) opt.classList.add('wrong');
+    });
+    box.querySelector('.quiz-explanation').classList.add('show');
+    updateUI();
+}
+
+function updateUI() {
+    const pct = Math.round((visited.size / slidesData.length)*100) || 0;
+    const pText = document.getElementById('progress-text');
+    const pFill = document.getElementById('progress-fill');
+    if(pText) pText.textContent = pct+'%';
+    if(pFill) pFill.style.width = pct+'%';
+    
+    const bmBtn = document.getElementById('bookmark-btn');
+    if(bmBtn && currentView === 'slide') {
+        const isBm = bookmarks.has(slidesData[currentSlide].id);
+        bmBtn.innerHTML = isBm ? '<i class="fa-solid fa-bookmark text-[var(--accent-amber)]"></i>' : '<i class="fa-regular fa-bookmark"></i>';
+    }
+    
+    let ansCount = 0;
+    let correctCount = 0;
+    Object.keys(answered).forEach(sId => {
+        Object.keys(answered[sId]).forEach(qIdx => {
+            ansCount++;
+            const slide = slidesData.find(s => s.id === parseInt(sId));
+            if(slide && answered[sId][qIdx] === slide.quiz[qIdx].correct) correctCount++;
+        });
+    });
+    
+    const aCount = document.getElementById('answered-count');
+    const dAnsTotal = document.getElementById('dash-metric-total');
+    const dAcc = document.getElementById('dash-metric-acc');
+    
+    if(aCount) aCount.textContent = ansCount;
+    if(dAnsTotal) dAnsTotal.textContent = ansCount;
+    if(dAcc) dAcc.textContent = ansCount > 0 ? Math.round((correctCount/ansCount)*100)+'%' : '0%';
+    
+    renderNav();
+}
+
+// ===================== RADAR CHART =====================
+function renderRadarChart() {
+    try {
+        if (typeof Chart === 'undefined') return; 
+        
+        const scores = slidesData.map(s => {
+            let correct = 0;
+            if(answered[s.id]) {
+                Object.keys(answered[s.id]).forEach(qIdx => {
+                    if(answered[s.id][qIdx] === s.quiz[qIdx].correct) correct++;
+                });
+            }
+            return (correct / 10) * 100; 
+        });
+
+        const labels = ['Mek. Tanah', 'Stab. Lereng', 'Bendungan', 'Fondasi', 'Investigasi', 'Geohidrologi', 'Klimatologi', 'Hidrologi', 'Hidrolika', 'Litologi', 'Geografi'];
+
+        const ctx = document.getElementById("liveRadarChart");
+        if(!ctx) return;
+        
+        const isDark = document.body.classList.contains("theme-dark");
+        const gridColor = isDark ? "rgba(255,255,255,0.15)" : "rgba(15,23,42,0.15)";
+        const textColor = isDark ? "#cbd5e1" : "#0f172a";
+
+        if(radarChartInstance) radarChartInstance.destroy();
+        
+        radarChartInstance = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Akurasi Jawaban (%)',
+                    data: scores,
+                    backgroundColor: 'rgba(6, 182, 212, 0.25)', 
+                    borderColor: '#06b6d4',
+                    pointBackgroundColor: '#f59e0b', 
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true, 
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: gridColor },
+                        grid: { color: gridColor },
+                        pointLabels: { color: textColor, font: { size: window.innerWidth < 768 ? 9 : 11, weight: 'bold', family: "'JetBrains Mono', monospace" } },
+                        ticks: { display: false, stepSize: 20 },
+                        min: 0, max: 100
+                    }
+                },
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { family: "'Orbitron', sans-serif", size: 12 },
+                        bodyFont: { family: "'JetBrains Mono', monospace", size: 11 },
+                        padding: 10, borderColor: '#06b6d4', borderWidth: 1
+                    }
+                }
+            }
+        });
+    } catch(e) {
+        console.error("Radar chart error:", e);
+    }
+}
+
+// ===================== KELOLA MOTTO KUSTOM =====================
+function initMottoRotator() {
+    const mottoText = document.getElementById("mottoText");
+    if(!mottoText) return;
+    
+    allMottos = [...defaultMottos, ...userMottos];
+    if(allMottos.length === 0) return;
+    
+    mottoText.innerHTML = allMottos[currentMottoIdx];
+
+    setInterval(() => {
+        mottoText.style.opacity = 0;
+        setTimeout(() => {
+            currentMottoIdx = (currentMottoIdx + 1) % allMottos.length;
+            mottoText.innerHTML = allMottos[currentMottoIdx];
+            mottoText.style.opacity = 1;
+        }, 500); 
+    }, 6000); 
+}
+
+function openMottoModal() {
+    renderMottoList();
+    openModal('mottoModal');
+}
+
+function renderMottoList() {
+    const list = document.getElementById('mottoList');
+    list.innerHTML = userMottos.map((m, i) => `
+        <div class="flex justify-between items-center bg-[var(--bg-card)] p-3 rounded-lg border border-[var(--border-color)]">
+            <span class="text-xs md:text-sm font-mono truncate flex-1 italic mr-2 text-[var(--medical-cyan)]">"${m}"</span>
+            <div class="flex gap-2 shrink-0">
+                <button onclick="editMotto(${i})" class="text-blue-400 hover:text-white bg-blue-900/40 p-2 rounded transition-colors"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteMotto(${i})" class="text-red-400 hover:text-white bg-red-900/40 p-2 rounded transition-colors"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+    if(userMottos.length === 0) {
+        list.innerHTML = `<p class="text-xs text-[var(--text-muted)] italic text-center py-4 bg-[var(--bg-main)] rounded-lg border border-dashed border-[var(--border-color)]">Belum ada motto kustom. Silakan tambahkan.</p>`;
+    }
+}
+
+function addMotto() {
+    const input = document.getElementById('newMottoInput');
+    const val = input.value.trim();
+    if(val) {
+        userMottos.push(val);
+        localStorage.setItem('userMottos', JSON.stringify(userMottos));
+        input.value = '';
+        allMottos = [...defaultMottos, ...userMottos]; 
+        renderMottoList();
+    }
+}
+
+function deleteMotto(idx) {
+    if(confirm("Hapus motto kustom ini?")) {
+        userMottos.splice(idx, 1);
+        localStorage.setItem('userMottos', JSON.stringify(userMottos));
+        allMottos = [...defaultMottos, ...userMottos];
+        renderMottoList();
+    }
+}
+
+function editMotto(idx) {
+    const newVal = prompt("Edit Motto Anda:", userMottos[idx]);
+    if(newVal !== null && newVal.trim() !== "") {
+        userMottos[idx] = newVal.trim();
+        localStorage.setItem('userMottos', JSON.stringify(userMottos));
+        allMottos = [...defaultMottos, ...userMottos];
+        renderMottoList();
+    }
+}
+
+// ===================== LATIHAN FLASHCARD =====================
+function buildFlashcardsAll() {
+    flashcardsAll = [];
+    slidesData.forEach(s => {
+        if(s.quiz) {
+            s.quiz.forEach(q => {
+                flashcardsAll.push({
+                    front: q.q,
+                    back: `<strong class="text-[var(--medical-cyan)] block mb-2 text-base md:text-xl">${q.options[q.correct]}</strong><span class='text-xs md:text-sm mt-2 block text-[var(--text-muted)] leading-relaxed border-t border-[var(--border-color)] pt-2 md:pt-4'>${q.exp}</span>`
+                });
+            });
+        }
+    });
+}
+function openFlashcards() {
+    const scr = document.getElementById('flash-screen');
+    if(scr) { scr.classList.add('active'); flashCurrent = 0; renderFlashcard(); }
+}
+function closeFlashcards() {
+    const scr = document.getElementById('flash-screen');
+    if(scr) scr.classList.remove('active');
+}
+function renderFlashcard() {
+    if(!flashcardsAll.length) return;
+    const fc = flashcardsAll[flashCurrent];
+    document.getElementById('flash-front-text').innerHTML = fc.front;
+    document.getElementById('flash-back-text').innerHTML = fc.back;
+    document.getElementById('flash-card-container').classList.remove('flipped');
+    
+    const flashStatsNode = document.getElementById('flash-stats');
+    if(flashStatsNode) flashStatsNode.textContent = `${flashCurrent+1} / ${flashcardsAll.length}`;
+}
+function flipFlashcard() { document.getElementById('flash-card-container').classList.toggle('flipped'); }
+function nextFlashcard() { if(flashCurrent < flashcardsAll.length-1) { flashCurrent++; renderFlashcard(); } }
+function prevFlashcard() { if(flashCurrent > 0) { flashCurrent--; renderFlashcard(); } }
+
+// ===================== UJIAN ACAK =====================
+function startExam() {
+    examQuestions = [];
+    slidesData.forEach(s => { if(s.quiz) s.quiz.forEach(q => examQuestions.push(q)); });
+    examQuestions = examQuestions.sort(() => 0.5 - Math.random()).slice(0, 25); 
+    examAnswers = {}; examCurrent = 0; examTimeLeft = 40*60;
+    
+    document.getElementById('exam-screen').classList.add('active');
+    renderExamQuestion();
+    
+    clearInterval(examTimer);
+    const tmr = document.getElementById('exam-timer');
+    if(tmr) tmr.classList.remove('text-[var(--danger)]');
+    examTimer = setInterval(() => {
+        examTimeLeft--;
+        if(tmr) tmr.textContent = `${Math.floor(examTimeLeft/60)}:${String(examTimeLeft%60).padStart(2,'0')}`;
+        if(examTimeLeft < 300 && tmr) tmr.classList.add('text-[var(--danger)]');
+        if(examTimeLeft <= 0) submitExam();
+    }, 1000);
+}
+
+function renderExamQuestion() {
+    const q = examQuestions[examCurrent];
+    const ansIdx = examAnswers[examCurrent];
+    const opts = q.options.map((opt, oi) => {
+        let cls = ansIdx !== undefined ? (oi===q.correct ? 'correct disabled' : (ansIdx===oi ? 'wrong disabled' : 'disabled')) : '';
+        return `<div class="quiz-opt bg-[var(--bg-main)] ${cls} transition-colors p-3 md:p-4 text-xs md:text-sm" onclick="answerExam(${oi}, this)">
+            <span class="w-8 h-8 md:w-10 md:h-10 inline-flex items-center justify-center rounded-full bg-[var(--bg-card)] border border-[var(--border-color)] font-bold text-xs md:text-sm shrink-0 mr-3 md:mr-4">${String.fromCharCode(65+oi)}</span>
+            <span class="flex-1 leading-relaxed">${opt}</span>
+        </div>`;
+    }).join('');
+    
+    document.getElementById('exam-body').innerHTML = `
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 md:p-8 shadow-xl mb-6">
+            <div class="text-base md:text-2xl font-bold mb-4 md:mb-6 text-[var(--text-main)] leading-relaxed font-sans">${examCurrent+1}. ${q.q}</div>
+            <div class="flex flex-col gap-3">${opts}</div>
+        </div>`;
+    document.getElementById('exam-progress').textContent = `${examCurrent+1} / ${examQuestions.length}`;
+}
+
+function answerExam(optIdx, el) {
+    if(examAnswers[examCurrent] !== undefined) return;
+    examAnswers[examCurrent] = optIdx;
+    renderExamQuestion(); 
+}
+
+function nextExamQ() { if(examCurrent < examQuestions.length-1) { examCurrent++; renderExamQuestion(); } }
+function prevExamQ() { if(examCurrent > 0) { examCurrent--; renderExamQuestion(); } }
+
+function submitExam() {
+    clearInterval(examTimer);
+    let correct = 0;
+    examQuestions.forEach((q, i) => { if(examAnswers[i] === q.correct) correct++; });
+    const score = Math.round((correct / examQuestions.length) * 100) || 0;
+    
+    document.getElementById('result-score').textContent = score + '%';
+    document.getElementById('res-correct').textContent = correct;
+    document.getElementById('res-wrong').textContent = examQuestions.length - correct;
+    
+    let predikat = 'Coba Lagi!';
+    if(score >= 80) predikat = '🏆 Analisis Sangat Baik!';
+    else if(score >= 60) predikat = '👍 Engineer Kompeten!';
+    document.getElementById('result-msg').textContent = predikat;
+    
+    document.getElementById('pdf-skor').textContent = score + '%';
+    document.getElementById('pdf-benar').textContent = correct;
+    document.getElementById('pdf-salah').textContent = examQuestions.length - correct;
+    document.getElementById('pdf-predikat').textContent = predikat;
+    
+    document.getElementById('exam-screen').classList.remove('active');
+    document.getElementById('exam-result').classList.add('active');
+}
+function closeExamResult() { document.getElementById('exam-result').classList.remove('active'); }
+
+function eksporPDF() {
+    const nama = document.getElementById('pesertaNama').value || 'Peserta Ujian';
+    const wa = document.getElementById('pesertaWA').value || '-';
+    const tgl = new Date().toLocaleDateString('id-ID');
+    
+    document.getElementById('pdf-nama').textContent = nama;
+    document.getElementById('pdf-wa').textContent = wa;
+    document.getElementById('pdf-tgl').textContent = tgl;
+    
+    const element = document.getElementById('pdf-content');
+    element.classList.remove('hidden');
+    
+    const opt = {
+      margin:       10,
+      filename:     `Hasil_Ujian_Geoteknik_${nama.replace(/\s+/g, '_')}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    
+    html2pdf().set(opt).from(element).save().then(() => {
+        element.classList.add('hidden');
+    });
+}
+
+function kirimWA() {
+    const nama = document.getElementById('pesertaNama').value || 'Peserta Ujian';
+    const waPeserta = document.getElementById('pesertaWA').value || '-';
+    const waPenguji = document.getElementById('pengujiWA').value;
+    
+    if(!waPenguji) {
+        alert("Silakan masukkan No. WA Penguji tujuan.");
+        return;
+    }
+    
+    const skor = document.getElementById('result-score').textContent;
+    const benar = document.getElementById('res-correct').textContent;
+    const salah = document.getElementById('res-wrong').textContent;
+    const predikat = document.getElementById('result-msg').textContent;
+    
+    const msg = `*LAPORAN HASIL UJIAN SERTIFIKASI GEOTEKNIK*\n\n*Nama Peserta:* ${nama}\n*No WA:* ${waPeserta}\n*Skor Akhir:* ${skor}\n*Benar:* ${benar}\n*Salah:* ${salah}\n*Predikat:* ${predikat}\n\n_Dicetak melalui Mega Atlas Geoteknik v7.0_`;
+    window.open(`https://wa.me/${waPenguji}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ===================== CHATBOT GEOBOT =====================
+function toggleChatWindow() {
+    const cw = document.getElementById('chatWindow');
+    if(cw) {
+        cw.classList.toggle('hidden'); 
+        cw.classList.toggle('flex');
+    }
+}
+
+function triggerChatShortcut(type) {
+    const input = document.getElementById("chatInput");
+    if(!input) return;
+    if(type === 'programmer') input.value = "Info Profil Ahli";
+    handleChatSubmit({ preventDefault: () => {} });
+}
+
+function handleChatSubmit(e) {
+    e.preventDefault();
+    const input = document.getElementById("chatInput");
+    const val = input.value.trim();
+    if(!val) return;
+    
+    const msgBox = document.getElementById('chatMessages');
+    msgBox.innerHTML += `<div class="bg-gradient-to-r from-[var(--accent-amber)] to-orange-500 text-slate-900 p-2 md:p-3 rounded-xl font-bold self-end max-w-[85%] ml-auto text-xs md:text-sm shadow-sm border border-orange-300 mt-2">${val}</div>`;
+    input.value = '';
+    msgBox.scrollTop = msgBox.scrollHeight;
+    
+    setTimeout(() => {
+        let ans = "Saya GeoBot. Silakan tanya seputar Mekanika Tanah, Plaxis, GeoStudio, Geohidrologi, Hidrolika, Litologi Geografi, atau Profil Pak Adi.";
+        let q = val.toLowerCase();
+        
+        if(q.includes("programmer") || q.includes("hartadi") || q.includes("adi") || q.includes("profil") || q.includes("ahli")) {
+            // Tampilan animasi warna-warni membesar pada Profil Chatbot Sesuai Permintaan
+            ans = `
+            <div class="bg-[var(--bg-main)] p-4 rounded-xl border-2 border-[var(--border-color)] mt-3 shadow-lg">
+                <strong class="text-[var(--medical-cyan)] text-xs md:text-sm block mb-3 uppercase tracking-widest border-b border-[var(--border-color)] pb-2"><i class="fa-solid fa-id-badge mr-1 md:mr-2"></i> Profil Eksekutif Ahli</strong>
+                <p class="mb-4 text-[10px] md:text-xs text-[var(--text-muted)] font-sans mt-2"><b>Mohamad Hartadi (Adi)</b><br>Tenaga Ahli Bendungan & Software Engineer</p>
+                <div class="flex flex-col gap-3 font-mono text-[10px] md:text-[11px]">
+                    <a href="https://www.facebook.com/m.hartadi" target="_blank" class="flex items-center gap-3 md:gap-4 bg-gradient-to-r from-blue-900/60 to-blue-800/40 p-2 md:p-3 rounded-lg text-blue-300 border border-blue-500/50 shadow-[0_0_15px_rgba(59,130,246,0.3)] hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] transition-all duration-300">
+                        <i class="fa-brands fa-facebook text-xl md:text-2xl w-6 md:w-8 text-center text-blue-400"></i> <span class="font-bold tracking-widest uppercase">Facebook Profil</span>
+                    </a>
+                    <a href="https://newbieonline7.blogspot.com" target="_blank" class="flex items-center gap-3 md:gap-4 bg-gradient-to-r from-amber-900/60 to-amber-800/40 p-2 md:p-3 rounded-lg text-amber-300 border border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(245,158,11,0.6)] transition-all duration-300">
+                        <i class="fa-solid fa-globe text-xl md:text-2xl w-6 md:w-8 text-center text-[var(--accent-amber)]"></i> <span class="font-bold tracking-widest uppercase">Web Blog (Portofolio)</span>
+                    </a>
+                    <a href="https://wa.me/6282231036047" target="_blank" class="flex items-center gap-3 md:gap-4 bg-gradient-to-r from-emerald-900/60 to-emerald-800/40 p-2 md:p-3 rounded-lg text-emerald-300 border border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(16,185,129,0.6)] transition-all duration-300">
+                        <i class="fa-brands fa-whatsapp text-xl md:text-2xl w-6 md:w-8 text-center text-[var(--accent-emerald)]"></i> <span class="font-bold tracking-widest uppercase">0822-3103-6047</span>
+                    </a>
+                </div>
+            </div>`;
+        }
+        else if(q.includes("tanah") || q.includes("mekanika")) ans = "Tanah lempung memiliki plastisitas tinggi (Atterberg Limit) dan permeabilitas sangat rendah. Perhitungan konsolidasi sangat vital di sini.";
+        else if(q.includes("lereng") || q.includes("longsor") || q.includes("slope")) ans = "Stabilitas Lereng dianalisis menggunakan metode irisan (Limit Equilibrium) di SLOPE/W. Faktor Keamanan (SF) harus di atas 1.5. Subdrain bisa digunakan untuk menurunkan freatik air.";
+        else if(q.includes("bendungan") || q.includes("seep") || q.includes("piping")) ans = "Rekayasa Bendungan sangat ketat pada pengendalian rembesan (SEEP/W). Piping atau erosi buluh internal dicegah dengan zona Filter transisi berlapis di hilir core lempung.";
+        else if(q.includes("fondasi") || q.includes("pancang") || q.includes("bore")) ans = "Kapasitas fondasi dalam disumbang oleh Tahanan Ujung (End Bearing) dan Gesekan Selimut (Skin Friction). Negative Skin Friction harus diwaspadai jika tanah lunak di atasnya masih mengalami konsolidasi.";
+        
+        msgBox.innerHTML += `<div class="bg-[var(--bg-card)] p-3 rounded-xl border border-[var(--border-color)] max-w-[85%] text-[var(--text-main)] font-mono text-xs md:text-sm shadow-sm border-l-4 border-[var(--accent-amber)] mt-3 leading-relaxed"><span class="text-[var(--accent-amber)] font-black block mb-1 text-[9px] md:text-[10px] uppercase"><i class="fa-solid fa-helmet-safety mr-1"></i> GeoBot Response:</span>${ans}</div>`;
+        msgBox.scrollTop = msgBox.scrollHeight;
+    }, 700);
+}
+
+// ===================== SCREENSAVER ENGINE =====================
+let maxIdleTimeoutLimit = parseInt(localStorage.getItem('ssTimeout')) || 120; 
+
+function saveSSConfig() {
+    const val = document.getElementById("ssTimeoutSelect").value;
+    maxIdleTimeoutLimit = parseInt(val);
+    localStorage.setItem('ssTimeout', maxIdleTimeoutLimit);
+    systemIdleTimeCounter = 0;
+    alert("Pengaturan screensaver berhasil disimpan!");
+    closeModal('ssModal');
+}
+
+let systemIdleTimeCounter = 0;
+let isScreensaverActive = false;
+
+function setupScreensaverListeners() {
+    const resetIdleMatrix = () => {
+        systemIdleTimeCounter = 0;
+        if(isScreensaverActive) deactivateScreensaver();
+    };
+    window.addEventListener("mousemove", resetIdleMatrix);
+    window.addEventListener("keypress", resetIdleMatrix);
+    window.addEventListener("touchstart", resetIdleMatrix);
+    window.addEventListener("scroll", resetIdleMatrix);
+
+    setInterval(() => {
+        systemIdleTimeCounter++;
+        if(systemIdleTimeCounter >= maxIdleTimeoutLimit && !isScreensaverActive) {
+            activateScreensaver();
+        }
+    }, 1000);
+}
+
+function triggerScreensaverManual() {
+    systemIdleTimeCounter = maxIdleTimeoutLimit;
+    activateScreensaver();
+}
+
+function activateScreensaver() {
+    if(isScreensaverActive) return;
+    isScreensaverActive = true;
+    const scNode = document.getElementById("techScreensaver");
+    if(scNode) {
+        scNode.style.display = 'flex';
+        setTimeout(() => { scNode.style.opacity = '1'; }, 50);
+    }
+}
+
+function deactivateScreensaver() {
+    if(!isScreensaverActive) return;
+    isScreensaverActive = false;
+    const scNode = document.getElementById("techScreensaver");
+    if(scNode) {
+        scNode.style.opacity = '0';
+        setTimeout(() => { scNode.style.display = 'none'; systemIdleTimeCounter = 0; }, 600);
+    }
+}
+</script>
+</body>
+</html>
