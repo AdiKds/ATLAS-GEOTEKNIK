@@ -146,7 +146,7 @@ body:not(.simple-mode) .simple-only{display:none !important}
 .modal-close { position: absolute; top: 1rem; right: 1.5rem; font-size: 1.5rem; color: var(--text3); cursor: pointer; z-index: 10; }
 .modal-close:hover { color: var(--danger); }
 
-/* === CHATBOT GEOBOT MELAYANG === */
+/* === CHATBOT GEOBOT MELAYANG (PEMBARUAN FITUR) === */
 #chatbot-container { position: fixed; bottom: 80px; right: 20px; z-index: 9000; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; pointer-events: none; font-family: 'JetBrains Mono', monospace; }
 .floating-btn-group { display: flex; flex-direction: row; gap: 12px; pointer-events: auto; }
 #chatbot-window { width: 350px; height: 500px; max-height: 70vh; background: var(--bg-card); border: 2px solid var(--accent-amber); border-radius: 1.2rem; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 10px 40px rgba(245,158,11,0.3); pointer-events: auto; }
@@ -159,6 +159,10 @@ body:not(.simple-mode) .simple-only{display:none !important}
 .chat-trigger-btn:hover { transform: scale(1.1); }
 .btn-amber { background: var(--grad1); box-shadow: 0 5px 20px rgba(245,158,11,0.4); color: #0f172a; font-weight: bold; }
 .btn-cyan { background: var(--bg3); border-color: var(--medical-cyan); color: var(--medical-cyan); }
+
+/* Animasi Mic Listening */
+.mic-listening { animation: pulse-red 1s infinite; background-color: rgba(239, 68, 68, 0.2) !important; color: #ef4444 !important; border-color: #ef4444 !important;}
+@keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
 /* === FLASHCARD & EXAM === */
 .flash-card-container{width:100%;max-width:560px;height:360px;position:relative;cursor:pointer;margin:auto;}
@@ -287,8 +291,24 @@ body:not(.simple-mode) .simple-only{display:none !important}
             <p><strong class="text-[var(--medical-cyan)]">2. Pencarian Cepat (Search):</strong> Cari spesifikasi materi seperti *Atterberg, SLOPE/W, Plaxis, atau Lugeon* langsung pada bilah pencarian atas.</p>
             <p><strong class="text-[var(--accent-emerald)]">3. Flashcard & Ujian Acak:</strong> Klik ikon kartu untuk latihan memori. Klik ikon pena untuk simulasi ujian komprehensif.</p>
             <p><strong class="text-[var(--simple)]">4. Dasbor Metrik AI:</strong> Pantau jaring laba-laba parameter ketepatan evaluasi Anda pada 11 modul secara *real-time*.</p>
-            <p><strong class="text-blue-400">5. Asisten AI GeoBot:</strong> Temukan asisten kucing di pojok kanan bawah yang siap menjawab konsultasi teori bendungan dan fondasi.</p>
+            <p><strong class="text-blue-400">5. Asisten AI GeoBot:</strong> Temukan asisten kucing di pojok kanan bawah yang siap menjawab konsultasi teori bendungan, dengan kemampuan pencarian Wikipedia dan interaksi Suara.</p>
         </div>
+    </div>
+</div>
+
+<!-- SETTING SUARA AI MODAL (FITUR BARU) -->
+<div id="voiceSettingsModal" class="modal-overlay">
+    <div class="modal-content !max-w-sm border-t-8 border-t-[var(--medical-cyan)] text-[var(--text-main)] mx-4">
+        <span class="modal-close" onclick="closeModal('voiceSettingsModal')">&times;</span>
+        <h3 class="text-lg font-black font-tech text-[var(--medical-cyan)] mb-2"><i class="fa-solid fa-headset mr-2"></i> Tema Suara AI</h3>
+        <p class="text-xs text-[var(--text-muted)] font-mono mb-6">Pilih gaya suara asisten GeoBot yang tersedia pada perangkat Anda.</p>
+        
+        <label class="block text-[var(--text-muted)] font-mono text-xs font-bold mb-2 uppercase tracking-wide">Pilih Jenis Suara:</label>
+        <select id="voiceSelect" onchange="changeBotVoice()" class="w-full bg-[var(--bg-main)] border border-[var(--border-color)] rounded-xl px-4 py-3 text-sm text-[var(--text-main)] focus:outline-none focus:border-[var(--medical-cyan)] font-mono mb-6 cursor-pointer hover:border-[var(--accent-amber)] transition-colors">
+            <option value="">Memuat daftar suara...</option>
+        </select>
+        
+        <button onclick="closeModal('voiceSettingsModal')" class="w-full bg-[var(--medical-cyan)] hover:bg-cyan-400 text-slate-900 py-3 rounded-xl font-bold uppercase tracking-widest transition-transform hover:scale-105 shadow-[0_0_15px_rgba(6,182,212,0.4)]">Tutup & Simpan</button>
     </div>
 </div>
 
@@ -461,7 +481,7 @@ body:not(.simple-mode) .simple-only{display:none !important}
   </main>
 </div>
 
-<!-- CHATBOT GEOBOT TERMINAL MELAYANG -->
+<!-- CHATBOT GEOBOT TERMINAL MELAYANG DENGAN FITUR VOICE & SHORTCUTS -->
 <div id="chatbot-container">
     <div id="chatbot-window">
         <div class="bg-gradient-to-b from-slate-950 to-slate-900 p-3 border-b-2 border-[var(--accent-amber)] shadow-md shrink-0 flex flex-col relative">
@@ -482,28 +502,35 @@ body:not(.simple-mode) .simple-only{display:none !important}
                 <span class="text-xl md:text-2xl font-black font-tech text-[var(--medical-cyan)] tracking-widest jam-realtime">00:00:00</span>
                 <span class="text-[9px] font-bold text-[var(--accent-amber)] uppercase tracking-widest mt-0.5 hari-realtime">Memuat...</span>
             </div>
-            
-            <div class="flex justify-center mt-1">
-                <button onclick="botProgrammerInfo()" class="bg-slate-800 hover:bg-slate-700 border border-[var(--accent-amber)]/50 text-[10px] text-amber-300 px-3.5 py-1 rounded-full flex items-center gap-1.5 transition-all shadow-md font-bold uppercase tracking-wider cursor-pointer hover:scale-105">
-                    <i class="fa-solid fa-user-astronaut text-[var(--accent-amber)] text-xs"></i> Shortcut Profil Ahli
-                </button>
-            </div>
         </div>
         
         <div id="chatbot-messages" class="hide-scrollbar">
             <div class="chat-msg chat-bot shadow-sm">
                 <strong class="text-[var(--accent-amber)] block mb-1 text-xs"><i class="fa-solid fa-cat mr-1"></i> GeoBot:</strong> 
-                Salam Konstruksi! Saya asisten Mega Atlas v7.0. Saya siap membantu Anda seputar Mekanika Tanah, SLOPE/W, Plaxis, Fondasi Dalam, atau info Pak Hartadi!
+                Salam Konstruksi! Saya asisten Mega Atlas v7.0. Saya siap membantu Anda. Untuk hal di luar Geoteknik, saya akan mencarinya secara otomatis di *Wikipedia* atau *Google AI*. Anda juga bisa menggunakan fitur mikrofon.
             </div>
         </div>
         
+        <!-- FITUR SHORTCUT CHATBOT (BARU) -->
+        <div class="p-2 bg-[var(--bg-main)] border-t border-[var(--border-color)] flex gap-1.5 overflow-x-auto hide-scrollbar shrink-0 font-mono">
+            <button type="button" onclick="triggerChatShortcut('fitur')" class="whitespace-nowrap px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/60 text-emerald-400 text-[10px] rounded border border-emerald-700 font-bold cursor-pointer transition-colors"><i class="fa-solid fa-layer-group mr-1"></i> Fitur Aplikasi</button>
+            <button type="button" onclick="triggerChatShortcut('programmer')" class="whitespace-nowrap px-3 py-1.5 bg-indigo-900/40 hover:bg-indigo-800/60 text-indigo-400 text-[10px] rounded border border-indigo-700 font-bold cursor-pointer transition-colors"><i class="fa-solid fa-user-astronaut mr-1"></i> Programmer</button>
+            <button type="button" onclick="triggerChatShortcut('my_aplikasi')" class="whitespace-nowrap px-3 py-1.5 bg-amber-900/40 hover:bg-amber-800/60 text-amber-400 text-[10px] rounded border border-amber-700 font-bold cursor-pointer transition-colors"><i class="fa-solid fa-cubes mr-1"></i> My Aplikasi</button>
+        </div>
+
         <form class="p-2 bg-[var(--bg-card)] border-t border-[var(--border-color)] flex gap-2 shrink-0" onsubmit="handleChat(event)">
+            <!-- TOMBOL VOICE MIC (BARU) -->
+            <button type="button" id="chatMicBtn" onclick="toggleVoice()" class="bg-[var(--bg3)] hover:bg-[var(--border-color)] text-[var(--medical-cyan)] px-3 rounded-lg text-xs cursor-pointer transition-all border border-[var(--medical-cyan)]" title="Perintah Suara AI"><i class="fa-solid fa-microphone"></i></button>
             <input type="text" id="chat-input" class="flex-1 bg-[var(--bg-main)] border border-[var(--border-color)] rounded-lg px-3 py-2 text-xs text-[var(--text-main)] focus:border-[var(--accent-amber)] focus:outline-none font-bold" placeholder="Tanya GeoBot..." autocomplete="off">
-            <button type="submit" class="bg-[var(--accent-amber)] text-slate-900 px-3.5 rounded-lg hover:bg-orange-400 font-black"><i class="fa-solid fa-paper-plane"></i></button>
+            <button type="submit" class="bg-[var(--accent-amber)] text-slate-900 px-3.5 rounded-lg hover:bg-orange-400 font-black cursor-pointer"><i class="fa-solid fa-paper-plane"></i></button>
         </form>
     </div>
     
     <div class="floating-btn-group">
+        <!-- TOMBOL PENGATURAN TEMA SUARA AI (BARU) -->
+        <button onclick="openModal('voiceSettingsModal')" class="chat-trigger-btn bg-[var(--bg-card)] text-[var(--medical-cyan)] border-[var(--medical-cyan)] custom-holo-trigger" data-holo="Pengaturan Tema Suara Asisten AI" title="Pengaturan Suara">
+            <i class="fa-solid fa-headset text-lg"></i>
+        </button>
         <button onclick="openModal('ssModal')" class="chat-trigger-btn btn-cyan custom-holo-trigger" data-holo="Pengaturan Waktu Tunggu Screensaver" title="Pengaturan Screensaver">
             <i class="fa-solid fa-desktop text-lg"></i>
         </button>
@@ -538,17 +565,15 @@ body:not(.simple-mode) .simple-only{display:none !important}
   </div>
 </div>
 
-<!-- INTERFACE UJIAN ACAK (PERBAIKAN UI & PANEL INFO MELAYANG) -->
+<!-- INTERFACE UJIAN ACAK -->
 <div id="exam-screen">
   
-  <!-- HEADER STICKY DENGAN INFO TIMER MELAYANG -->
   <div class="sticky top-0 w-full bg-[var(--bg-card)]/95 backdrop-blur-md p-3 md:p-4 border-b-2 border-[var(--medical-cyan)] shrink-0 shadow-[0_5px_25px_rgba(0,0,0,0.5)] z-20 flex justify-between items-center gap-2">
     <div class="flex items-center gap-3">
         <div class="font-bold font-tech text-[var(--medical-cyan)] text-sm md:text-lg uppercase tracking-widest hidden sm:block"><i class="fa-solid fa-file-signature mr-2"></i> SIMULASI UJIAN</div>
         <button class="sm:hidden btn-icon text-red-400 border-red-500/30 hover:bg-red-500/20" onclick="closeExam()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     
-    <!-- INFO PANEL MELAYANG: TIMER MUNDUR & PROGRES -->
     <div class="flex items-center gap-3 md:gap-5 bg-slate-950 px-4 md:px-6 py-2 md:py-2.5 rounded-2xl border border-[var(--accent-amber)]/40 shadow-[0_0_20px_rgba(245,158,11,0.25)]">
         <div class="flex flex-col items-end border-r border-slate-700 pr-3 md:pr-5">
             <span class="text-[9px] md:text-[10px] text-[var(--text-muted)] uppercase font-bold tracking-widest">Progress</span>
@@ -563,10 +588,8 @@ body:not(.simple-mode) .simple-only{display:none !important}
     <button class="hidden sm:flex btn-icon text-red-400 border-red-500/30 hover:bg-red-500/20 ml-auto" onclick="closeExam()" title="Tutup Ujian"><i class="fa-solid fa-xmark"></i></button>
   </div>
   
-  <!-- KONTEN SOAL UJIAN -->
   <div id="exam-body" class="max-w-4xl mx-auto w-full flex-1 overflow-y-auto p-4 md:p-8 hide-scrollbar"></div>
   
-  <!-- BOTTOM CONTROLS (TOMBOL KUMPULKAN) -->
   <div class="flex justify-center gap-3 md:gap-6 bg-[var(--bg-card)]/95 backdrop-blur-md p-4 border-t border-[var(--border-color)] shrink-0 w-full z-20 font-mono shadow-[0_-5px_25px_rgba(0,0,0,0.5)]">
     <button class="btn-icon w-auto px-5 py-2.5 font-bold text-xs md:text-sm" onclick="prevExamQ()">◀ Prev</button>
     <button class="btn-icon w-auto px-8 py-2.5 font-bold bg-gradient-to-r from-[var(--accent-amber)] to-orange-500 text-slate-900 border-none hover:from-orange-400 hover:to-orange-600 uppercase tracking-wider text-xs md:text-sm shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:scale-105 transition-transform" onclick="submitExam()">✅ Selesai & Kumpulkan</button>
@@ -620,7 +643,100 @@ body:not(.simple-mode) .simple-only{display:none !important}
 </div>
 
 <script>
-// ===================== DATA MATERI & KUIS GEOTEKNIK (LENGKAP 11 MODUL, 110 SOAL) =====================
+// =========================================================================
+// TEXT-TO-SPEECH (TTS) & VOICE RECOGNITION (DIADOPSI DARI AL-QURAN DIGITAL)
+// =========================================================================
+const synth = window.speechSynthesis;
+let botVoice = null;
+let recognizing = false;
+let availableVoices = [];
+
+function loadVoices() {
+    availableVoices = synth.getVoices();
+    if(availableVoices.length === 0) return;
+    
+    const voiceSelect = document.getElementById('voiceSelect');
+    if(voiceSelect) {
+        voiceSelect.innerHTML = '';
+        availableVoices.forEach((v, i) => {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = `${v.name} (${v.lang})`;
+            voiceSelect.appendChild(option);
+        });
+    }
+
+    const savedVoiceIndex = localStorage.getItem('botVoiceIndex');
+    if(savedVoiceIndex !== null && availableVoices[savedVoiceIndex]) {
+        botVoice = availableVoices[savedVoiceIndex];
+        if(voiceSelect) voiceSelect.value = savedVoiceIndex;
+    } else {
+        botVoice = availableVoices.find(v => (v.name.includes('Indonesian') || v.name.includes('ID') || v.name.includes('Female'))) || availableVoices[0];
+        if(voiceSelect) voiceSelect.value = availableVoices.indexOf(botVoice);
+    }
+}
+
+if (synth.onvoiceschanged !== undefined) { synth.onvoiceschanged = loadVoices; }
+loadVoices();
+
+function changeBotVoice() {
+    const voiceSelect = document.getElementById('voiceSelect');
+    const selectedIndex = voiceSelect.value;
+    botVoice = availableVoices[selectedIndex];
+    localStorage.setItem('botVoiceIndex', selectedIndex);
+    speakBot("Tema suara AI telah berhasil diubah.");
+}
+
+function speakBot(text) {
+    if (!synth) return;
+    synth.cancel(); 
+    const cleanText = text.replace(/\*/g, '').replace(/_/g, '').replace(/<[^>]*>?/gm, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    if (botVoice) utterance.voice = botVoice;
+    utterance.rate = 1.0;
+    utterance.pitch = 1.05;
+    synth.speak(utterance);
+}
+
+function toggleVoice() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("Voice Recognition tidak didukung di browser ini."); return;
+    }
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SpeechRec(); 
+    rec.lang = 'id-ID';
+    
+    const micBtn = document.getElementById('chatMicBtn');
+    const chatInput = document.getElementById('chat-input');
+
+    if (!recognizing) {
+        rec.start(); 
+        recognizing = true;
+        micBtn.classList.add('mic-listening');
+        chatInput.placeholder = "Mendengarkan...";
+        speakBot("Mendengarkan pertanyaan Anda.");
+    } else {
+        rec.stop(); 
+        recognizing = false;
+        micBtn.classList.remove('mic-listening');
+        chatInput.placeholder = "Tanya GeoBot...";
+    }
+
+    rec.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        chatInput.value = transcript;
+        processChatMessage(transcript);
+        chatInput.value = '';
+    };
+    rec.onend = () => {
+        recognizing = false;
+        micBtn.classList.remove('mic-listening');
+        chatInput.placeholder = "Tanya GeoBot...";
+    };
+}
+
+
+// ===================== DATA MATERI & KUIS GEOTEKNIK =====================
 const createQuiz = (questions) => questions.map(q => ({ q: q[0], options: q[1], correct: q[2], exp: q[3] }));
 
 const slidesData = [
@@ -1534,53 +1650,212 @@ function kirimWA() {
     window.open(`https://wa.me/${waPenguji}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-// Chatbot GeoBot Terminal (Ala Syifa Style)
+// =========================================================================
+// CHATBOT GEOBOT TERMINAL (INTEGRASI FITUR BARU)
+// =========================================================================
 const chatbot = document.getElementById('chatbot-window');
 function toggleChatbot() { if(chatbot) chatbot.classList.toggle('active'); }
 
-function botProgrammerInfo() {
+function insertBotReply(html, textToSpeak) {
     const msgBox = document.getElementById('chatbot-messages');
-    msgBox.innerHTML += `<div class="chat-msg chat-user shadow-md border border-[var(--accent-amber)]">Shortcut Profil Ahli</div>`;
-    
-    setTimeout(() => {
-        msgBox.innerHTML += `
-        <div class="chat-msg chat-bot shadow-md border-[var(--accent-amber)] font-mono text-[11px] bg-slate-950 text-white relative overflow-hidden flex-shrink-0">
-            <i class="fa-solid fa-user-astronaut text-5xl absolute -right-2 -bottom-2 text-amber-500/10 z-0"></i>
-            <strong class="text-[var(--medical-cyan)] block mb-2.5 border-b border-slate-800 pb-1.5 uppercase relative z-10 tracking-widest"><i class="fa-solid fa-id-badge mr-1"></i> Profil Pengembang</strong>
-            <div class="flex flex-col gap-1.5 relative z-10 break-all text-[10px]">
-                <div><span class="text-[var(--accent-amber)] font-bold inline-block w-9">Nama</span>: Mohamad Hartadi (Adi)</div>
-                <div><span class="text-emerald-400 font-bold inline-block w-9">WA</span>: <a href="https://wa.me/6282231036047" target="_blank" class="text-emerald-300 hover:underline">0822-3103-6047</a></div>
-                <div><span class="text-blue-400 font-bold inline-block w-9">FB</span>: <a href="https://www.facebook.com/m.hartadi" target="_blank" class="text-blue-300 hover:underline">fb.com/m.hartadi</a></div>
-                <div><span class="text-amber-400 font-bold inline-block w-9">Blog</span>: <a href="https://newbieonline7.blogspot.com" target="_blank" class="text-amber-300 hover:underline">newbieonline7.blogspot.com</a></div>
-            </div>
-            <p class="text-[9px] text-slate-400 mt-3 border-t border-slate-800 pt-1 text-center italic leading-relaxed">"Desain geoteknik teruji dan inovasi tanpa batas."</p>
-        </div>`;
-        setTimeout(() => { msgBox.scrollTop = msgBox.scrollHeight; }, 50);
-    }, 400);
+    msgBox.innerHTML += `<div class="chat-msg chat-bot shadow-md border border-[var(--border-color)]">${html}</div>`;
+    msgBox.scrollTop = msgBox.scrollHeight;
+    if(textToSpeak) speakBot(textToSpeak);
 }
 
-function handleChat(e) {
-    e.preventDefault();
+function triggerChatShortcut(type) {
+    if(type === 'fitur') {
+        const payload = `
+            <strong class="text-[var(--medical-cyan)] block mb-1">Fitur Mega Atlas Geoteknik v7.0:</strong>
+            <ul class="list-disc list-inside text-[var(--text-main)] space-y-1 mt-2 text-xs">
+                <li>Integrasi 11 Modul Materi Geoteknik.</li>
+                <li>Simulasi Ujian Acak 25 Soal.</li>
+                <li>Metrik Radar AI Akurasi Pembelajaran.</li>
+                <li>Pencarian Eksternal Wikipedia & Google AI.</li>
+                <li>Asisten Suara Text-to-Speech & Microphone.</li>
+            </ul>`;
+        insertBotReply(payload, "Berikut adalah fitur utama dari Mega Atlas Geoteknik versi 7.");
+    } else if(type === 'programmer') {
+        const payload = `
+            <strong class="text-[var(--accent-amber)] block mb-2 uppercase">Profil Programmer</strong>
+            <div class="text-[var(--text-main)] bg-[var(--bg-main)] p-3 rounded border border-[var(--border-color)] shadow-inner space-y-1.5 text-xs">
+                <p><b>Nama:</b> Mohamad Hartadi (Adi)</p>
+                <p><b>Profesi:</b> Geotechnical & Structural Analyst / Dev</p>
+                <div class="border-t border-[var(--border-color)] my-2 pt-2 space-y-1.5">
+                    <p><i class="fa-solid fa-globe text-[var(--accent-amber)] w-4 text-center"></i> <b>Blog:</b> <a href="https://newbieonline7.blogspot.com" target="_blank" class="text-[var(--medical-cyan)] hover:underline break-all">newbieonline7.blogspot.com</a></p>
+                    <p><i class="fa-brands fa-facebook text-blue-400 w-4 text-center"></i> <b>FB:</b> <a href="https://www.facebook.com/m.hartadi" target="_blank" class="text-blue-400 hover:underline break-all">facebook.com/m.hartadi</a></p>
+                    <p><i class="fa-brands fa-whatsapp text-emerald-400 w-4 text-center"></i> <b>WA:</b> <a href="https://wa.me/6282231036047" target="_blank" class="text-emerald-400 hover:underline">0822-3103-6047</a></p>
+                </div>
+            </div>`;
+        insertBotReply(payload, "Profil programmer adalah Bapak Mohamad Hartadi. Anda dapat menghubungi beliau melalui Facebook, WhatsApp, atau mengunjungi blog resminya.");
+    } else if(type === 'my_aplikasi') {
+        const apps = [
+            {u:"https://adikds.github.io/jarvis-ai/",i:"fa-robot",n:"JARVIS AI"},
+            {u:"https://adikds.github.io/edu-market-pro/",i:"fa-graduation-cap",n:"EduMarket Pro"},
+            {u:"https://adikds.github.io/iptv-terminal/",i:"fa-tv",n:"IPTV Terminal"},
+            {u:"https://adikds.github.io/TV-streaming-live/",i:"fa-signal",n:"TV Streaming Live"},
+            {u:"https://adikds.github.io/Al-Quran-Karim/",i:"fa-book-quran",n:"Al-Quran Karim"},
+            {u:"https://adikds.github.io/-MEGA-ATLAS-FKG/",i:"fa-tooth",n:"Mega Atlas FKG"},
+            {u:"https://adikds.github.io/SISTEM-MONITORING-SEISMIK-PERINGATAN-TSUNAMI/",i:"fa-wave-square",n:"Tsunami Alert"},
+            {u:"https://adikds.github.io/MONITORING-PREDIKSI-STATUS-EI-NI-O-LA-NI-A/",i:"fa-temperature-half",n:"El Nino La Nina"},
+            {u:"https://adikds.github.io/MONITORING-PREDIKSI-ANGIN-MUSON-INDONESIA/",i:"fa-wind",n:"Angin Muson"},
+            {u:"https://adikds.github.io/INTEGRATED-DAM-ANALYTICS-ASSESSMENT-SYSTEM/",i:"fa-water",n:"Dam Analytics"},
+            {u:"https://adikds.github.io/WAY-APU-DAM/",i:"fa-building-shield",n:"Way Apu Dam"},
+            {u:"https://adikds.github.io/EVENT-DRIVEN-ARCHITECTURE-FOR-AI-AGENTS/",i:"fa-sitemap",n:"EDA AI Agents"},
+            {u:"https://adikds.github.io/GeoStructPro-15-Essential-Geotechnical-Formulas/",i:"fa-mountain",n:"GeoStructPro 15"},
+            {u:"https://adikds.github.io/GEOSTRUCT-PRO-20-FORMULA-GEOTECHNICAL/",i:"fa-layer-group",n:"GeoStruct Pro 20"},
+            {u:"https://adikds.github.io/UNIFIED-SOIL-CLASSIFICATION-SYSTEM/",i:"fa-cubes",n:"USCS Soil"},
+            {u:"https://adikds.github.io/AERORADAR-PRO/",i:"fa-plane",n:"AeroRadar Pro"},
+            {u:"https://adikds.github.io/HYDRACANAL-PRO-GEOMETRIC-DESIGN/",i:"fa-water-ladder",n:"HydraCanal Pro"},
+            {u:"https://adikds.github.io/financial-planner/",i:"fa-chart-line",n:"Financial Planner"},
+            {u:"https://adikds.github.io/business-suite/",i:"fa-chart-bar",n:"Business Suite"},
+            {u:"https://adikds.github.io/stock-manager/",i:"fa-boxes-stacked",n:"Stock Manager"},
+            {u:"https://adikds.github.io/Aplikasi_Point_of_Sale_-POS-_atau_sistem_kasir/",i:"fa-cash-register",n:"POS Terminal Pro"},
+            {u:"https://adikds.github.io/KEUANGANKU/",i:"fa-cash-register",n:"Keuanganku"},
+            {u:"https://adikds.github.io/DARUSSYIFA-MEDIKA/",i: "fa-hospital",n:"DARUSSYIFA"},
+            {u:"https://adikds.github.io/SKIN_SYIFA_AI/",i: "fa-magnifying-glass-chart",n:"SKIN SYIFA"},
+            {u:"https://adikds.github.io/NEURO-PSYCH_AI/",i: "fa-brain",n:"NEURO-PSYCH"},
+            {u:"https://adikds.github.io/SMILE-SYIFA-AI/",i: "fa-face-smile",n:"SMILE SYIFA"},
+            {u:"https://adikds.github.io/DOKTER-AI/",i: "fa-user-doctor",n:"DOKTER AI"},
+            {u: "https://www.f15library.com/", i: "fa-book-open-reader",n: "F15 Library"},
+            {u: "https://adikds.github.io/ATLAS-GEOTEKNIK/", i: "fa-earth-americas",n: "Geotechnical"},
+            {u: "https://adikds.github.io/STATISTICS_for_ENGINEERS-/", i: "fa-chart-pie",n: "Stats Engineers"},
+            {u: "https://famelack.com/radio/id", i: "fa-radio", n: "Radio Online"},
+            {u: "https://famelack.com/tv/id", i: "fa-tv",n: "TV Famelack"},
+            {u: "https://adikds.github.io/Mega-Atlas-Kedokteran-Neurologi-Bedah-Syaraf/", i: "fa-brain",n: "Neurology"},
+            {u: "https://adikds.github.io/Adi_Newbie/", i: "fa-user-astronaut",n: "Adi Newbie" }
+        ];
+
+        let appsHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">';
+        apps.forEach(app => {
+            appsHtml += `
+                <a href="${app.u}" target="_blank" class="flex items-center gap-2 p-2 bg-[var(--bg-card)] hover:bg-[var(--border-color)] border border-[var(--medical-cyan)] rounded transition-colors text-[var(--text-main)] text-decoration-none shadow-sm cursor-pointer text-[10px]">
+                    <div class="w-6 h-6 flex items-center justify-center bg-[var(--bg-main)] rounded-full shrink-0 text-[var(--medical-cyan)]">
+                        <i class="fa-solid ${app.i}"></i>
+                    </div>
+                    <span class="font-bold truncate text-[9px]">${app.n}</span>
+                </a>`;
+        });
+        appsHtml += '</div>';
+
+        let payload = `
+            <div class="bg-[var(--bg-main)] border border-[var(--medical-cyan)] rounded-xl p-3 text-[var(--text-main)] shadow-xl mt-2">
+                <div class="flex items-center gap-2 text-[var(--medical-cyan)] font-bold font-mono text-[10px] tracking-wider mb-1 uppercase">
+                    <i class="fa-solid fa-layer-group"></i> My Applications Directory
+                </div>
+                <p class="text-[9px] text-[var(--text-muted)] font-sans mb-2">Pilih aplikasi untuk membukanya di tab baru:</p>
+                <div class="max-h-56 overflow-y-auto hide-scrollbar pr-1 pb-1">
+                    ${appsHtml}
+                </div>
+            </div>`;
+        insertBotReply(payload, "Menampilkan direktori aplikasi ekosistem terpadu milik Mohamad Hartadi.");
+    }
+}
+
+async function handleChat(e) {
+    if(e) e.preventDefault();
     const inp = document.getElementById('chat-input');
     const val = inp.value.trim();
     if(!val) return;
-    const msgBox = document.getElementById('chatbot-messages');
-    msgBox.innerHTML += `<div class="chat-msg chat-user shadow-md border border-[var(--accent-amber)]">${val}</div>`;
-    inp.value = '';
     
-    setTimeout(() => {
-        let ans = "Saya GeoBot. Silakan tanya seputar Mekanika Tanah, Plaxis, GeoStudio, Geohidrologi, Hidrolika, Litologi Geografi, atau Profil Pak Adi.";
-        let q = val.toLowerCase();
+    processChatMessage(val);
+    inp.value = '';
+}
+
+async function processChatMessage(txt) {
+    const msgBox = document.getElementById('chatbot-messages');
+    msgBox.innerHTML += `<div class="chat-msg chat-user shadow-md border border-[var(--accent-amber)]">${txt}</div>`;
+    msgBox.scrollTop = msgBox.scrollHeight;
+    
+    const textLower = txt.toLowerCase();
+
+    // 1. Pengecekan Shortcuts Lokal
+    if (textLower.includes('programmer') || textLower.includes('hartadi') || textLower.includes('pembuat')) { triggerChatShortcut('programmer'); return; } 
+    if (textLower.includes('fitur') || textLower.includes('aplikasi ini')) { triggerChatShortcut('fitur'); return; }
+    if (textLower.includes('my aplikasi') || textLower.includes('aplikasi lain')) { triggerChatShortcut('my_aplikasi'); return; }
+    
+    // 2. Pengecekan Konteks Geoteknik Lokal
+    let localResponse = "";
+    if(textLower.includes("tanah") || textLower.includes("mekanika")) localResponse = "Modul 1: Dalam Mekanika Tanah, parameter krusial meliputi Kadar Air, Angka Pori, dan Atterberg Limit. Klasifikasi menentukan perilaku desain.";
+    else if(textLower.includes("lereng") || textLower.includes("longsor") || textLower.includes("slope")) localResponse = "Modul 2: Stabilitas Lereng mengevaluasi Faktor Keamanan (SF). Rekomendasi SF harus > 1.5. Subdrain sangat dianjurkan untuk menurunkan muka air tanah.";
+    else if(textLower.includes("bendungan") || textLower.includes("seep")) localResponse = "Modul 3: Rekayasa Bendungan berfokus pada pengendalian rembesan menggunakan zona Filter pasir dan Core lempung untuk mencegah erosi buluh (piping).";
+    else if(textLower.includes("fondasi") || textLower.includes("pondasi") || textLower.includes("tiang")) localResponse = "Modul 4: Kapasitas fondasi dalam disumbang oleh Tahanan Ujung (End Bearing) dan Gesekan Selimut (Skin Friction).";
+
+    if (localResponse) {
+        insertBotReply(`<strong class="text-[var(--accent-amber)] block mb-1 text-xs"><i class="fa-solid fa-robot mr-1"></i> GeoBot:</strong> ${localResponse}`, localResponse);
+        return;
+    }
+
+    // 3. Jika Di Luar Topik -> Hit Wikipedia API & Gemini AI
+    const typingId = 'typing-' + Date.now();
+    msgBox.innerHTML += `<div id="${typingId}" class="text-[var(--medical-cyan)] font-mono text-[10px] animate-pulse my-2 flex items-center gap-2"><i class="fa-solid fa-microchip fa-spin"></i> Mentransmisikan kueri ke AI...</div>`;
+    msgBox.scrollTop = msgBox.scrollHeight;
+
+    try {
+        let aiResponse = "";
+        let textToSpeak = "";
+        const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(txt)}`;
         
-        if(q.includes("programmer") || q.includes("hartadi") || q.includes("adi") || q.includes("profil") || q.includes("ahli")) { botProgrammerInfo(); return; }
-        else if(q.includes("tanah") || q.includes("mekanika")) ans = "<b>Modul 1:</b> Tanah lempung memiliki plastisitas tinggi (Atterberg Limit) dan permeabilitas sangat rendah. Perhitungan konsolidasi sangat vital di sini.";
-        else if(q.includes("lereng") || q.includes("longsor") || q.includes("slope")) ans = "<b>Modul 2:</b> Stabilitas Lereng dianalisis menggunakan metode irisan (Limit Equilibrium) di SLOPE/W. Faktor Keamanan (SF) harus di atas 1.5. Subdrain bisa digunakan untuk menurunkan freatik air.";
-        else if(q.includes("bendungan") || q.includes("seep") || q.includes("piping")) ans = "<b>Modul 3:</b> Rekayasa Bendungan sangat ketat pada pengendalian rembesan (SEEP/W). Piping atau erosi buluh internal dicegah dengan zona Filter transisi berlapis di hilir core lempung.";
-        else if(q.includes("fondasi") || q.includes("pancang") || q.includes("bore")) ans = "<b>Modul 4:</b> Kapasitas fondasi dalam disumbang oleh Tahanan Ujung (End Bearing) dan Gesekan Selimut (Skin Friction). Negative Skin Friction harus diwaspadai jika tanah lunak di atasnya masih mengalami konsolidasi.";
+        const API_KEY = localStorage.getItem('gemini_api_key') || ''; 
+        if (API_KEY) {
+            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+            const sysPrompt = "Berikan jawaban singkat, jelas dan detail layaknya asisten pintar mengenai: " + txt;
+            const r = await fetch(geminiUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({contents: [{ parts: [{ text: sysPrompt }] }]}) });
+            if(r.ok) {
+                const d = await r.json();
+                if(d.candidates && d.candidates.length > 0) {
+                    textToSpeak = d.candidates[0].content.parts[0].text;
+                    let geminiText = textToSpeak.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b class="text-[var(--medical-cyan)]">$1</b>');
+                    aiResponse = `
+                    <div class="mt-1 p-3 border border-[var(--border-color)] rounded-xl bg-[var(--bg-main)] shadow-inner">
+                        <b class="text-[var(--accent-amber)] mb-2 block border-b border-[var(--border-color)] pb-1"><i class="fa-brands fa-google mr-1"></i> Google AI Response:</b>
+                        ${geminiText}
+                        <div class="mt-3 text-right">
+                            <a href="${googleSearchUrl}" target="_blank" class="text-blue-400 hover:text-blue-300 underline font-bold text-[10px] bg-blue-900/30 px-2 py-1 rounded"><i class="fa-solid fa-link"></i> Sumber Google</a>
+                        </div>
+                    </div>`;
+                }
+            }
+        } 
         
-        msgBox.innerHTML += `<div class="chat-msg chat-bot shadow-md border border-[var(--border-color)]"><strong class="text-[var(--accent-amber)] block mb-1 text-xs"><i class="fa-solid fa-cat mr-1"></i> GeoBot:</strong>${ans}</div>`;
-        setTimeout(() => { msgBox.scrollTop = msgBox.scrollHeight; }, 50);
-    }, 600);
+        // Fallback or Addition: Wikipedia
+        if (!aiResponse) {
+            const wikiUrl = `https://id.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exsentences=3&exintro=1&explaintext=1&generator=search&gsrsearch=${encodeURIComponent(txt)}&gsrlimit=1&origin=*`;
+            const wikiFetch = await fetch(wikiUrl);
+            const wikiData = await wikiFetch.json();
+            
+            if (wikiData.query && wikiData.query.pages) {
+                const pageId = Object.keys(wikiData.query.pages)[0];
+                textToSpeak = wikiData.query.pages[pageId].extract;
+                const pageTitle = wikiData.query.pages[pageId].title;
+                const sourceWikiUrl = `https://id.wikipedia.org/wiki/${encodeURIComponent(pageTitle.replace(/ /g, '_'))}`;
+                
+                aiResponse = `
+                    <div class="bg-[var(--bg-main)] p-3 rounded-xl border border-[var(--medical-cyan)] shadow-inner">
+                        <b class="text-[var(--medical-cyan)] mb-2 block border-b border-[var(--border-color)] pb-1"><i class="fa-brands fa-wikipedia-w mr-1"></i> Hasil Ensiklopedia Wikipedia:</b>
+                        ${textToSpeak}
+                        <div class="mt-3 flex gap-2">
+                            <a href="${sourceWikiUrl}" target="_blank" class="text-blue-400 underline font-bold bg-blue-900/30 px-2 py-1 rounded text-[10px]"><i class="fa-solid fa-book"></i> Baca Selengkapnya</a>
+                            <a href="${googleSearchUrl}" target="_blank" class="text-emerald-400 underline font-bold bg-emerald-900/30 px-2 py-1 rounded text-[10px]"><i class="fa-brands fa-google"></i> Google Search</a>
+                        </div>
+                    </div>`;
+            } else {
+                 aiResponse = `
+                    <div class="text-[var(--text-main)] bg-[var(--danger)]/20 border border-[var(--danger)] p-2 rounded-xl">
+                        Maaf, saya tidak menemukan jawaban pasti di database saya. Silakan gunakan tautan berikut:<br><br>
+                        <a href="${googleSearchUrl}" target="_blank" class="text-[var(--accent-amber)] underline font-bold"><i class="fa-brands fa-google"></i> Cari "${txt}" di Google</a>
+                    </div>`;
+                 textToSpeak = "Saya tidak menemukan informasi tersebut. Silakan cek pencarian Google.";
+            }
+        }
+
+        document.getElementById(typingId).remove();
+        insertBotReply(`<strong class="text-[var(--accent-amber)] block mb-1 text-xs"><i class="fa-solid fa-robot mr-1"></i> GeoBot AI:</strong>${aiResponse}`, textToSpeak);
+
+    } catch (error) {
+        document.getElementById(typingId).remove();
+        insertBotReply(`<strong class="text-[var(--danger)] block mb-1 text-xs"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Error:</strong> Terjadi kesalahan jaringan saat mencari informasi.`, "Terjadi kesalahan jaringan.");
+    }
 }
 
 // Screensaver Automatic Trigger Engine
